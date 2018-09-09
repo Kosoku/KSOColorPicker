@@ -29,8 +29,8 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    self.colorSwatchView.KDI_borderColor = UIColor.lightGrayColor;
-    self.colorSwatchView.KDI_borderWidth = 1.0;
+    self.colorPickerView.mode = KSOColorPickerViewModeRGBA;
+    self.colorPickerView.color = KDIColorRandomRGBA();
     
     kstWeakify(self);
     [NSNotificationCenter.defaultCenter addObserverForName:KSOColorPickerViewNotificationDidChangeColor object:self.colorPickerView queue:nil usingBlock:^(NSNotification * _Nonnull note) {

@@ -33,6 +33,8 @@
 		074748262145B8BA00DBA04A /* KSOColorPickerSlider.h in Headers */ = {isa = PBXBuildFile; fileRef = 074748242145B8BA00DBA04A /* KSOColorPickerSlider.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		074748272145B8BA00DBA04A /* KSOColorPickerSlider.m in Sources */ = {isa = PBXBuildFile; fileRef = 074748252145B8BA00DBA04A /* KSOColorPickerSlider.m */; };
 		074748292145B95300DBA04A /* KSOColorPickerViewPrivate.h in Headers */ = {isa = PBXBuildFile; fileRef = 074748282145B95300DBA04A /* KSOColorPickerViewPrivate.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		0747482C2145D22E00DBA04A /* KSOColorPickerSwatchView.h in Headers */ = {isa = PBXBuildFile; fileRef = 0747482A2145D22E00DBA04A /* KSOColorPickerSwatchView.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		0747482D2145D22E00DBA04A /* KSOColorPickerSwatchView.m in Sources */ = {isa = PBXBuildFile; fileRef = 0747482B2145D22E00DBA04A /* KSOColorPickerSwatchView.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -91,6 +93,8 @@
 		074748242145B8BA00DBA04A /* KSOColorPickerSlider.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KSOColorPickerSlider.h; sourceTree = "<group>"; };
 		074748252145B8BA00DBA04A /* KSOColorPickerSlider.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = KSOColorPickerSlider.m; sourceTree = "<group>"; };
 		074748282145B95300DBA04A /* KSOColorPickerViewPrivate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KSOColorPickerViewPrivate.h; sourceTree = "<group>"; };
+		0747482A2145D22E00DBA04A /* KSOColorPickerSwatchView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KSOColorPickerSwatchView.h; sourceTree = "<group>"; };
+		0747482B2145D22E00DBA04A /* KSOColorPickerSwatchView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = KSOColorPickerSwatchView.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -205,6 +209,8 @@
 				074748282145B95300DBA04A /* KSOColorPickerViewPrivate.h */,
 				074748242145B8BA00DBA04A /* KSOColorPickerSlider.h */,
 				074748252145B8BA00DBA04A /* KSOColorPickerSlider.m */,
+				0747482A2145D22E00DBA04A /* KSOColorPickerSwatchView.h */,
+				0747482B2145D22E00DBA04A /* KSOColorPickerSwatchView.m */,
 			);
 			path = Private;
 			sourceTree = "<group>";
@@ -219,6 +225,7 @@
 				074747E42145A2AB00DBA04A /* KSOColorPicker.h in Headers */,
 				074748292145B95300DBA04A /* KSOColorPickerViewPrivate.h in Headers */,
 				074747ED2145A43200DBA04A /* KSOColorPickerView.h in Headers */,
+				0747482C2145D22E00DBA04A /* KSOColorPickerSwatchView.h in Headers */,
 				074748262145B8BA00DBA04A /* KSOColorPickerSlider.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -327,6 +334,7 @@
 			files = (
 				074748272145B8BA00DBA04A /* KSOColorPickerSlider.m in Sources */,
 				074747EE2145A43200DBA04A /* KSOColorPickerView.m in Sources */,
+				0747482D2145D22E00DBA04A /* KSOColorPickerSwatchView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

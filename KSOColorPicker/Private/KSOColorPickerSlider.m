@@ -17,10 +17,13 @@
 #import "KSOColorPickerView.h"
 
 #import <Ditko/Ditko.h>
+#import <Stanley/Stanley.h>
 
 @interface KSOColorPickerSlider ()
 @property (readwrite,assign,nonatomic) KSOColorPickerViewComponentType componentType;
 @property (weak,nonatomic) KSOColorPickerView *colorPickerView;
+
+- (void)_updateValue;
 @end
 
 @implementation KSOColorPickerSlider
@@ -54,6 +57,7 @@
                 color = KDIColorW((CGFloat)i / CGRectGetWidth(trackRect));
                 break;
             case KSOColorPickerViewComponentTypeAlpha:
+                color = [self.colorPickerView.color colorWithAlphaComponent:(CGFloat)i / CGRectGetWidth(trackRect)];
                 break;
             default:
                 break;
@@ -73,30 +77,71 @@
     
     self.minimumTrackTintColor = UIColor.clearColor;
     self.maximumTrackTintColor = UIColor.clearColor;
+    self.minimumValue = 0.0;
+    self.maximumValue = 1.0;
     
-    switch (_componentType) {
-        case KSOColorPickerViewComponentTypeAlpha:
-        case KSOColorPickerViewComponentTypeSaturation:
-            self.minimumValue = 0.0;
-            self.maximumValue = 1.0;
+    [self _updateValue];
+    
+    
+    return self;
+}
+
+- (void)_updateValue; {
+    CGFloat red = 0.0, green = 0.0, blue = 0.0, hue = 0.0, saturation = 0.0, brightness = 0.0, white = 0.0, alpha = 0.0;
+    
+    switch (self.colorPickerView.mode) {
+        case KSOColorPickerViewModeHSBA:
+        case KSOColorPickerViewModeHSB:
+            [self.colorPickerView.color getHue:&hue saturation:&saturation brightness:&brightness alpha:&alpha];
             break;
-        case KSOColorPickerViewComponentTypeWhite:
-        case KSOColorPickerViewComponentTypeBlue:
-        case KSOColorPickerViewComponentTypeGreen:
-        case KSOColorPickerViewComponentTypeRed:
-        case KSOColorPickerViewComponentTypeBrightness:
-            self.minimumValue = 0.0;
-            self.maximumValue = 255.0;
+        case KSOColorPickerViewModeRGB:
+        case KSOColorPickerViewModeRGBA:
+            [self.colorPickerView.color getRed:&red green:&green blue:&blue alpha:&alpha];
             break;
-        case KSOColorPickerViewComponentTypeHue:
-            self.minimumValue = 0.0;
-            self.maximumValue = 360.0;
+        case KSOColorPickerViewModeW:
+        case KSOColorPickerViewModeWA:
+            [self.colorPickerView.color getWhite:&white alpha:&alpha];
             break;
         default:
             break;
     }
     
-    return self;
+    switch (self.componentType) {
+        case KSOColorPickerViewComponentTypeAlpha:
+            self.value = alpha * self.maximumValue;
+            break;
+        case KSOColorPickerViewComponentTypeSaturation:
+            self.value = saturation * self.maximumValue;
+            break;
+        case KSOColorPickerViewComponentTypeWhite:
+            self.value = white * self.maximumValue;
+            break;
+        case KSOColorPickerViewComponentTypeBlue:
+            self.value = blue * self.maximumValue;
+            break;
+        case KSOColorPickerViewComponentTypeGreen:
+            self.value = green * self.maximumValue;
+            break;
+        case KSOColorPickerViewComponentTypeRed:
+            self.value = red * self.maximumValue;
+            break;
+        case KSOColorPickerViewComponentTypeBrightness:
+            self.value = brightness * self.maximumValue;
+            break;
+        case KSOColorPickerViewComponentTypeHue:
+            self.value = hue * self.maximumValue;
+            break;
+        default:
+            break;
+    }
+}
+
+@dynamic color;
+- (UIColor *)color {
+    return self.colorPickerView.color;
+}
+- (void)setColor:(UIColor *)color {
+    [self _updateValue];
 }
 
 @end

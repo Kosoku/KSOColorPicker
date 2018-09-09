@@ -16,6 +16,7 @@
 #import "KSOColorPickerView.h"
 #import "KSOColorPickerViewPrivate.h"
 #import "KSOColorPickerSlider.h"
+#import "KSOColorPickerSwatchView.h"
 
 #import <Stanley/Stanley.h>
 #import <Ditko/Ditko.h>
@@ -23,12 +24,19 @@
 NSNotificationName const KSOColorPickerViewNotificationDidChangeColor = @"KSOColorPickerViewNotificationDidChangeColor";
 
 @interface KSOColorPickerView ()
+@property (strong,nonatomic) KSOColorPickerSwatchView *swatchView;
 @property (strong,nonatomic) UIStackView *stackView;
 @property (readonly,nonatomic) NSArray<KSOColorPickerSlider *> *sliders;
+
+@property (assign,nonatomic) BOOL shouldUpdateSlidersColor;
+
+- (void)setColor:(UIColor *)color notify:(BOOL)notify;
 
 - (void)_KSOColorPickerViewInit;
 - (void)_updateSliderControls;
 - (KSOColorPickerSlider *)_createSliderControlForComponentType:(KSOColorPickerViewComponentType)type;
+
++ (UIColor *)_defaultColorForMode:(KSOColorPickerViewMode)mode;
 @end
 
 @implementation KSOColorPickerView
@@ -50,8 +58,49 @@ NSNotificationName const KSOColorPickerViewNotificationDidChangeColor = @"KSOCol
     return self;
 }
 
+- (void)setColor:(UIColor *)color {
+    [self setColor:color notify:NO];
+}
+- (void)setColor:(UIColor *)color notify:(BOOL)notify; {
+    [self willChangeValueForKey:@kstKeypath(self,color)];
+    
+    _color = color;
+    
+    [self didChangeValueForKey:@kstKeypath(self,color)];
+    
+    self.swatchView.color = _color;
+    
+    if (self.shouldUpdateSlidersColor) {
+        for (KSOColorPickerSlider *slider in self.sliders) {
+            slider.color = _color;
+        }
+    }
+    
+    if (notify) {
+        [NSNotificationCenter.defaultCenter postNotificationName:KSOColorPickerViewNotificationDidChangeColor object:self];
+    }
+}
+
+- (void)setMode:(KSOColorPickerViewMode)mode {
+    if (_mode == mode) {
+        return;
+    }
+    
+    _mode = mode;
+    
+    [self _updateSliderControls];
+}
+
 - (void)_KSOColorPickerViewInit; {
     _mode = KSOColorPickerViewModeDefault;
+    _color = [KSOColorPickerView _defaultColorForMode:_mode];
+    
+    _shouldUpdateSlidersColor = YES;
+    
+    _swatchView = [[KSOColorPickerSwatchView alloc] initWithFrame:CGRectZero];
+    _swatchView.translatesAutoresizingMaskIntoConstraints = NO;
+    _swatchView.color = _color;
+    [self addSubview:_swatchView];
     
     _stackView = [[UIStackView alloc] initWithFrame:CGRectZero];
     _stackView.translatesAutoresizingMaskIntoConstraints = NO;
@@ -62,8 +111,11 @@ NSNotificationName const KSOColorPickerViewNotificationDidChangeColor = @"KSOCol
     
     [self _updateSliderControls];
     
+    [NSLayoutConstraint activateConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[view]|" options:0 metrics:nil views:@{@"view": _swatchView}]];
+    [NSLayoutConstraint activateConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[view(==height)]" options:0 metrics:@{@"height": @44.0} views:@{@"view": _swatchView}]];
+    
     [NSLayoutConstraint activateConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[view]|" options:0 metrics:nil views:@{@"view": _stackView}]];
-    [NSLayoutConstraint activateConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[view]|" options:0 metrics:nil views:@{@"view": _stackView}]];
+    [NSLayoutConstraint activateConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[top]-[view]|" options:0 metrics:nil views:@{@"view": _stackView, @"top": _swatchView}]];
 }
 - (void)_updateSliderControls; {
     NSArray *componentTypes;
@@ -108,21 +160,61 @@ NSNotificationName const KSOColorPickerViewNotificationDidChangeColor = @"KSOCol
     
     retval.translatesAutoresizingMaskIntoConstraints = NO;
     
-    [retval addTarget:self action:@selector(_sliderAction:) forControlEvents:UIControlEventValueChanged];
+    [retval addTarget:self action:@selector(_sliderValueChanged:) forControlEvents:UIControlEventValueChanged];
+    [retval addTarget:self action:@selector(_sliderTouchDown:) forControlEvents:UIControlEventTouchDown];
+    [retval addTarget:self action:@selector(_sliderTouchUp:) forControlEvents:UIControlEventTouchUpInside|UIControlEventTouchUpOutside|UIControlEventTouchCancel];
     
     return retval;
 }
 
-- (IBAction)_sliderAction:(KSOColorPickerSlider *)sender {
++ (UIColor *)_defaultColorForMode:(KSOColorPickerViewMode)mode; {
+    UIColor *retval;
+    
+    switch (mode) {
+        case KSOColorPickerViewModeRGBA:
+            retval = KDIColorRGBA(0.0, 0.0, 0.0, 1.0);
+            break;
+        case KSOColorPickerViewModeW:
+            retval = KDIColorW(0.0);
+            break;
+        case KSOColorPickerViewModeWA:
+            retval = KDIColorWA(0.0, 1.0);
+            break;
+        case KSOColorPickerViewModeHSB:
+            retval = KDIColorHSB(0.0, 0.0, 0.0);
+            break;
+        case KSOColorPickerViewModeRGB:
+            retval = KDIColorRGB(0.0, 0.0, 0.0);
+            break;
+        case KSOColorPickerViewModeHSBA:
+            retval = KDIColorHSBA(0.0, 0.0, 0.0, 1.0);
+            break;
+        default:
+            break;
+    }
+    
+    return retval;
+}
+
+- (IBAction)_sliderValueChanged:(KSOColorPickerSlider *)sender {
     switch (self.mode) {
         case KSOColorPickerViewModeRGB:
-            self.color = KDIColorRGB(self.sliders[0].value / self.sliders[0].maximumValue, self.sliders[1].value / self.sliders[1].maximumValue, self.sliders[2].value / self.sliders[2].maximumValue);
+            [self setColor:KDIColorRGB(self.sliders[0].value / self.sliders[0].maximumValue, self.sliders[1].value / self.sliders[1].maximumValue, self.sliders[2].value / self.sliders[2].maximumValue) notify:YES];
+            break;
+        case KSOColorPickerViewModeRGBA:
+            [self setColor:KDIColorRGBA(self.sliders[0].value / self.sliders[0].maximumValue, self.sliders[1].value / self.sliders[1].maximumValue, self.sliders[2].value / self.sliders[2].maximumValue, self.sliders[3].value / self.sliders[3].maximumValue) notify:YES];
             break;
         default:
             break;
     }
     
     [NSNotificationCenter.defaultCenter postNotificationName:KSOColorPickerViewNotificationDidChangeColor object:self];
+}
+- (IBAction)_sliderTouchDown:(id)sender {
+    self.shouldUpdateSlidersColor = NO;
+}
+- (IBAction)_sliderTouchUp:(id)sender {
+    self.shouldUpdateSlidersColor = YES;
 }
 
 - (NSArray<KSOColorPickerSlider *> *)sliders {

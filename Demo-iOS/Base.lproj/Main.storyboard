@@ -17,32 +17,21 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="qzY-LP-ktM">
-                                <rect key="frame" x="155" y="30" width="64" height="64"/>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" constant="64" id="Zvy-XH-y9j"/>
-                                    <constraint firstAttribute="height" constant="64" id="wRM-sR-dok"/>
-                                </constraints>
-                            </view>
                             <view contentMode="scaleToFill" placeholderIntrinsicWidth="343" placeholderIntrinsicHeight="128" translatesAutoresizingMaskIntoConstraints="NO" id="bqs-IM-nWn" customClass="KSOColorPickerView">
-                                <rect key="frame" x="16" y="102" width="343" height="128"/>
+                                <rect key="frame" x="16" y="269.5" width="343" height="128"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             </view>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
                             <constraint firstItem="bqs-IM-nWn" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="16" id="5p8-Ke-yAS"/>
-                            <constraint firstItem="qzY-LP-ktM" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="63q-jH-Yja"/>
-                            <constraint firstItem="qzY-LP-ktM" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="10" id="Jfk-Tg-rn5"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="bqs-IM-nWn" secondAttribute="trailing" constant="16" id="RcW-qJ-Lt5"/>
-                            <constraint firstItem="bqs-IM-nWn" firstAttribute="top" secondItem="qzY-LP-ktM" secondAttribute="bottom" constant="8" id="Zxy-Tn-le7"/>
+                            <constraint firstItem="bqs-IM-nWn" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" id="jaZ-we-zPF"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>
                     <connections>
                         <outlet property="colorPickerView" destination="bqs-IM-nWn" id="PxD-rk-enD"/>
-                        <outlet property="colorSwatchView" destination="qzY-LP-ktM" id="6oc-8i-0Q8"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
