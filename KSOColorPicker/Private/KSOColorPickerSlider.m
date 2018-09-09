@@ -82,7 +82,6 @@
     
     [self _updateValue];
     
-    
     return self;
 }
 
@@ -108,28 +107,28 @@
     
     switch (self.componentType) {
         case KSOColorPickerViewComponentTypeAlpha:
-            self.value = alpha * self.maximumValue;
+            self.value = alpha;
             break;
         case KSOColorPickerViewComponentTypeSaturation:
-            self.value = saturation * self.maximumValue;
+            self.value = saturation;
             break;
         case KSOColorPickerViewComponentTypeWhite:
-            self.value = white * self.maximumValue;
+            self.value = white;
             break;
         case KSOColorPickerViewComponentTypeBlue:
-            self.value = blue * self.maximumValue;
+            self.value = blue;
             break;
         case KSOColorPickerViewComponentTypeGreen:
-            self.value = green * self.maximumValue;
+            self.value = green;
             break;
         case KSOColorPickerViewComponentTypeRed:
-            self.value = red * self.maximumValue;
+            self.value = red;
             break;
         case KSOColorPickerViewComponentTypeBrightness:
-            self.value = brightness * self.maximumValue;
+            self.value = brightness;
             break;
         case KSOColorPickerViewComponentTypeHue:
-            self.value = hue * self.maximumValue;
+            self.value = hue;
             break;
         default:
             break;

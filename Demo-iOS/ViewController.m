@@ -20,7 +20,6 @@
 #import <Stanley/Stanley.h>
 
 @interface ViewController ()
-@property (weak,nonatomic) IBOutlet UIView *colorSwatchView;
 @property (weak,nonatomic) IBOutlet KSOColorPickerView *colorPickerView;
 @end
 
@@ -29,13 +28,8 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    self.colorPickerView.mode = KSOColorPickerViewModeRGBA;
-    self.colorPickerView.color = KDIColorRandomRGBA();
-    
-    kstWeakify(self);
-    [NSNotificationCenter.defaultCenter addObserverForName:KSOColorPickerViewNotificationDidChangeColor object:self.colorPickerView queue:nil usingBlock:^(NSNotification * _Nonnull note) {
-        kstweak_self.colorSwatchView.backgroundColor = kstweak_self.colorPickerView.color;
-    }];
+    self.colorPickerView.mode = KSOColorPickerViewModeHSBA;
+//    self.colorPickerView.color = KDIColorRandomRGBA();
 }
 
 @end

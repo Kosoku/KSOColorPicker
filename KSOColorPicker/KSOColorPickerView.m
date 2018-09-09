@@ -199,16 +199,26 @@ NSNotificationName const KSOColorPickerViewNotificationDidChangeColor = @"KSOCol
 - (IBAction)_sliderValueChanged:(KSOColorPickerSlider *)sender {
     switch (self.mode) {
         case KSOColorPickerViewModeRGB:
-            [self setColor:KDIColorRGB(self.sliders[0].value / self.sliders[0].maximumValue, self.sliders[1].value / self.sliders[1].maximumValue, self.sliders[2].value / self.sliders[2].maximumValue) notify:YES];
+            [self setColor:KDIColorRGB(self.sliders[0].value, self.sliders[1].value, self.sliders[2].value) notify:YES];
             break;
         case KSOColorPickerViewModeRGBA:
-            [self setColor:KDIColorRGBA(self.sliders[0].value / self.sliders[0].maximumValue, self.sliders[1].value / self.sliders[1].maximumValue, self.sliders[2].value / self.sliders[2].maximumValue, self.sliders[3].value / self.sliders[3].maximumValue) notify:YES];
+            [self setColor:KDIColorRGBA(self.sliders[0].value, self.sliders[1].value, self.sliders[2].value, self.sliders[3].value) notify:YES];
+            break;
+        case KSOColorPickerViewModeHSBA:
+            [self setColor:KDIColorHSBA(self.sliders[0].value, self.sliders[1].value, self.sliders[2].value, self.sliders[3].value) notify:YES];
+            break;
+        case KSOColorPickerViewModeHSB:
+            [self setColor:KDIColorHSB(self.sliders[0].value, self.sliders[1].value, self.sliders[2].value) notify:YES];
+            break;
+        case KSOColorPickerViewModeW:
+            [self setColor:KDIColorW(self.sliders[0].value) notify:YES];
+            break;
+        case KSOColorPickerViewModeWA:
+            [self setColor:KDIColorWA(self.sliders[0].value, self.sliders[1].value) notify:YES];
             break;
         default:
             break;
     }
-    
-    [NSNotificationCenter.defaultCenter postNotificationName:KSOColorPickerViewNotificationDidChangeColor object:self];
 }
 - (IBAction)_sliderTouchDown:(id)sender {
     self.shouldUpdateSlidersColor = NO;
