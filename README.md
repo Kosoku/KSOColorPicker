@@ -1,3 +1,3 @@
 ## KSOColorPicker
 
-*KSOColorPicker* is a collection of classes to facilitate picking colors on iOS.
+*KSOColorPicker* is a iOS framework to facilitate picking colors.
