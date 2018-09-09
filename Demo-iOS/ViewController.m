@@ -15,22 +15,27 @@
 
 #import "ViewController.h"
 
-@interface ViewController ()
+#import <KSOColorPicker/KSOColorPicker.h>
+#import <Ditko/Ditko.h>
+#import <Stanley/Stanley.h>
 
+@interface ViewController ()
+@property (weak,nonatomic) IBOutlet UIView *colorSwatchView;
+@property (weak,nonatomic) IBOutlet KSOColorPickerView *colorPickerView;
 @end
 
 @implementation ViewController
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    // Do any additional setup after loading the view, typically from a nib.
+    
+    self.colorSwatchView.KDI_borderColor = UIColor.lightGrayColor;
+    self.colorSwatchView.KDI_borderWidth = 1.0;
+    
+    kstWeakify(self);
+    [NSNotificationCenter.defaultCenter addObserverForName:KSOColorPickerViewNotificationDidChangeColor object:self.colorPickerView queue:nil usingBlock:^(NSNotification * _Nonnull note) {
+        kstweak_self.colorSwatchView.backgroundColor = kstweak_self.colorPickerView.color;
+    }];
 }
-
-
-- (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
-}
-
 
 @end

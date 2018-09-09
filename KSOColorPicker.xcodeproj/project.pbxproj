@@ -18,6 +18,21 @@
 		074748052145A4AC00DBA04A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 074748042145A4AC00DBA04A /* main.m */; };
 		074748092145A4E700DBA04A /* KSOColorPicker.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 074747DF2145A2AB00DBA04A /* KSOColorPicker.framework */; };
 		0747480A2145A4E700DBA04A /* KSOColorPicker.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 074747DF2145A2AB00DBA04A /* KSOColorPicker.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		074748102145A7F800DBA04A /* Ditko.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0747480F2145A7F800DBA04A /* Ditko.framework */; };
+		074748122145A7FC00DBA04A /* KSOFontAwesomeExtensions.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 074748112145A7FC00DBA04A /* KSOFontAwesomeExtensions.framework */; };
+		074748142145A80000DBA04A /* Loki.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 074748132145A80000DBA04A /* Loki.framework */; };
+		074748162145A80400DBA04A /* Stanley.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 074748152145A80400DBA04A /* Stanley.framework */; };
+		074748182145A81000DBA04A /* Stanley.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 074748172145A81000DBA04A /* Stanley.framework */; };
+		074748192145A81000DBA04A /* Stanley.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 074748172145A81000DBA04A /* Stanley.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		0747481B2145A81500DBA04A /* Loki.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0747481A2145A81500DBA04A /* Loki.framework */; };
+		0747481C2145A81500DBA04A /* Loki.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 0747481A2145A81500DBA04A /* Loki.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		0747481E2145A81A00DBA04A /* KSOFontAwesomeExtensions.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0747481D2145A81A00DBA04A /* KSOFontAwesomeExtensions.framework */; };
+		0747481F2145A81A00DBA04A /* KSOFontAwesomeExtensions.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 0747481D2145A81A00DBA04A /* KSOFontAwesomeExtensions.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		074748212145A82000DBA04A /* Ditko.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 074748202145A82000DBA04A /* Ditko.framework */; };
+		074748222145A82000DBA04A /* Ditko.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 074748202145A82000DBA04A /* Ditko.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		074748262145B8BA00DBA04A /* KSOColorPickerSlider.h in Headers */ = {isa = PBXBuildFile; fileRef = 074748242145B8BA00DBA04A /* KSOColorPickerSlider.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		074748272145B8BA00DBA04A /* KSOColorPickerSlider.m in Sources */ = {isa = PBXBuildFile; fileRef = 074748252145B8BA00DBA04A /* KSOColorPickerSlider.m */; };
+		074748292145B95300DBA04A /* KSOColorPickerViewPrivate.h in Headers */ = {isa = PBXBuildFile; fileRef = 074748282145B95300DBA04A /* KSOColorPickerViewPrivate.h */; settings = {ATTRIBUTES = (Private, ); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -37,7 +52,11 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
+				0747481C2145A81500DBA04A /* Loki.framework in Embed Frameworks */,
 				0747480A2145A4E700DBA04A /* KSOColorPicker.framework in Embed Frameworks */,
+				074748192145A81000DBA04A /* Stanley.framework in Embed Frameworks */,
+				074748222145A82000DBA04A /* Ditko.framework in Embed Frameworks */,
+				0747481F2145A81A00DBA04A /* KSOFontAwesomeExtensions.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -61,6 +80,17 @@
 		074748012145A4AC00DBA04A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		074748032145A4AC00DBA04A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		074748042145A4AC00DBA04A /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		0747480F2145A7F800DBA04A /* Ditko.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Ditko.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		074748112145A7FC00DBA04A /* KSOFontAwesomeExtensions.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = KSOFontAwesomeExtensions.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		074748132145A80000DBA04A /* Loki.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Loki.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		074748152145A80400DBA04A /* Stanley.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Stanley.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		074748172145A81000DBA04A /* Stanley.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Stanley.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		0747481A2145A81500DBA04A /* Loki.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Loki.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		0747481D2145A81A00DBA04A /* KSOFontAwesomeExtensions.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = KSOFontAwesomeExtensions.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		074748202145A82000DBA04A /* Ditko.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Ditko.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		074748242145B8BA00DBA04A /* KSOColorPickerSlider.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KSOColorPickerSlider.h; sourceTree = "<group>"; };
+		074748252145B8BA00DBA04A /* KSOColorPickerSlider.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = KSOColorPickerSlider.m; sourceTree = "<group>"; };
+		074748282145B95300DBA04A /* KSOColorPickerViewPrivate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KSOColorPickerViewPrivate.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -68,6 +98,10 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				074748162145A80400DBA04A /* Stanley.framework in Frameworks */,
+				074748142145A80000DBA04A /* Loki.framework in Frameworks */,
+				074748122145A7FC00DBA04A /* KSOFontAwesomeExtensions.framework in Frameworks */,
+				074748102145A7F800DBA04A /* Ditko.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -75,7 +109,11 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0747481B2145A81500DBA04A /* Loki.framework in Frameworks */,
 				074748092145A4E700DBA04A /* KSOColorPicker.framework in Frameworks */,
+				074748182145A81000DBA04A /* Stanley.framework in Frameworks */,
+				074748212145A82000DBA04A /* Ditko.framework in Frameworks */,
+				0747481E2145A81A00DBA04A /* KSOFontAwesomeExtensions.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -88,6 +126,7 @@
 				074747E12145A2AB00DBA04A /* KSOColorPicker */,
 				074747F42145A4AB00DBA04A /* Demo-iOS */,
 				074747E02145A2AB00DBA04A /* Products */,
+				0747480E2145A7F800DBA04A /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -124,6 +163,7 @@
 			children = (
 				074747EB2145A43200DBA04A /* KSOColorPickerView.h */,
 				074747EC2145A43200DBA04A /* KSOColorPickerView.m */,
+				074748232145B8A300DBA04A /* Private */,
 			);
 			name = Source;
 			sourceTree = "<group>";
@@ -144,6 +184,31 @@
 			path = "Demo-iOS";
 			sourceTree = "<group>";
 		};
+		0747480E2145A7F800DBA04A /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				074748202145A82000DBA04A /* Ditko.framework */,
+				0747481D2145A81A00DBA04A /* KSOFontAwesomeExtensions.framework */,
+				0747481A2145A81500DBA04A /* Loki.framework */,
+				074748172145A81000DBA04A /* Stanley.framework */,
+				074748152145A80400DBA04A /* Stanley.framework */,
+				074748132145A80000DBA04A /* Loki.framework */,
+				074748112145A7FC00DBA04A /* KSOFontAwesomeExtensions.framework */,
+				0747480F2145A7F800DBA04A /* Ditko.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		074748232145B8A300DBA04A /* Private */ = {
+			isa = PBXGroup;
+			children = (
+				074748282145B95300DBA04A /* KSOColorPickerViewPrivate.h */,
+				074748242145B8BA00DBA04A /* KSOColorPickerSlider.h */,
+				074748252145B8BA00DBA04A /* KSOColorPickerSlider.m */,
+			);
+			path = Private;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXHeadersBuildPhase section */
@@ -152,7 +217,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				074747E42145A2AB00DBA04A /* KSOColorPicker.h in Headers */,
+				074748292145B95300DBA04A /* KSOColorPickerViewPrivate.h in Headers */,
 				074747ED2145A43200DBA04A /* KSOColorPickerView.h in Headers */,
+				074748262145B8BA00DBA04A /* KSOColorPickerSlider.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -258,6 +325,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				074748272145B8BA00DBA04A /* KSOColorPickerSlider.m in Sources */,
 				074747EE2145A43200DBA04A /* KSOColorPickerView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
