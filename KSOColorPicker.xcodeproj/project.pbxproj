@@ -74,6 +74,7 @@
 		0738134E2146E13300D9C515 /* NSBundle+KSOColorPickerPrivateExtensions.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NSBundle+KSOColorPickerPrivateExtensions.h"; sourceTree = "<group>"; };
 		0738134F2146E13300D9C515 /* NSBundle+KSOColorPickerPrivateExtensions.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "NSBundle+KSOColorPickerPrivateExtensions.m"; sourceTree = "<group>"; };
 		073813532146E37700D9C515 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
+		073813552146E3FD00D9C515 /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/Localizable.strings; sourceTree = "<group>"; };
 		074747DF2145A2AB00DBA04A /* KSOColorPicker.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = KSOColorPicker.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		074747E22145A2AB00DBA04A /* KSOColorPicker.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KSOColorPicker.h; sourceTree = "<group>"; };
 		074747E32145A2AB00DBA04A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -314,6 +315,7 @@
 			knownRegions = (
 				en,
 				Base,
+				ja,
 			);
 			mainGroup = 074747D32145A26E00DBA04A;
 			productRefGroup = 074747E02145A2AB00DBA04A /* Products */;
@@ -416,6 +418,7 @@
 			isa = PBXVariantGroup;
 			children = (
 				073813532146E37700D9C515 /* en */,
+				073813552146E3FD00D9C515 /* ja */,
 			);
 			name = Localizable.strings;
 			sourceTree = "<group>";
@@ -442,12 +445,14 @@
 		074747D82145A26E00DBA04A /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 			};
 			name = Debug;
 		};
 		074747D92145A26E00DBA04A /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 			};
 			name = Release;
 		};
