@@ -1,8 +1,8 @@
 //
-//  KSOColorPicker.h
-//  KSOColorPicker
+//  UIViewController+KSOColorPickerExtensions.h
+//  KSOColorPicker-iOS
 //
-//  Created by William Towe on 9/9/18.
+//  Created by William Towe on 9/10/18.
 //  Copyright © 2018 Kosoku Interactive, LLC. All rights reserved.
 //
 //  Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met:
@@ -15,14 +15,17 @@
 
 #import <UIKit/UIKit.h>
 
-//! Project version number for KSOColorPicker.
-FOUNDATION_EXPORT double KSOColorPickerVersionNumber;
+NS_ASSUME_NONNULL_BEGIN
 
-//! Project version string for KSOColorPicker.
-FOUNDATION_EXPORT const unsigned char KSOColorPickerVersionString[];
+typedef void(^KSOColorPickerViewControllerCompletionBlock)(UIColor * _Nullable color);
 
-// In this header, you should import all the public headers of your framework using statements like #import <KSOColorPicker/PublicHeader.h>
+@class KSOColorPickerViewController;
 
-#import <KSOColorPicker/KSOColorPickerView.h>
-#import <KSOColorPicker/KSOColorPickerViewController.h>
-#import <KSOColorPicker/UIViewController+KSOColorPickerExtensions.h>
+@interface UIViewController (KSOColorPickerExtensions)
+
+- (void)KSO_presentColorPickerViewController:(KSOColorPickerViewController *)viewController animated:(BOOL)animated completion:(KSOColorPickerViewControllerCompletionBlock)completion;
+- (void)KSO_pushColorPickerViewController:(KSOColorPickerViewController *)viewController animated:(BOOL)animated completion:(KSOColorPickerViewControllerCompletionBlock)completion;
+
+@end
+
+NS_ASSUME_NONNULL_END

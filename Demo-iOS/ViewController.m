@@ -45,16 +45,21 @@
     
     self.navigationItem.rightBarButtonItems = @[[UIBarButtonItem KDI_barButtonItemWithTitle:@"Present" style:UIBarButtonItemStylePlain block:^(__kindof UIBarButtonItem * _Nonnull barButtonItem) {
         kstStrongify(self);
-        KSOColorPickerViewController *viewController = [[KSOColorPickerViewController alloc] initWithColorPickerView:nil];
-        
-        viewController.delegate = self;
-        
-        [self presentViewController:[[UINavigationController alloc] initWithRootViewController:viewController] animated:YES completion:nil];
+        // using the convenience category method
+        [self KSO_presentColorPickerViewController:[[KSOColorPickerViewController alloc] initWithColorPickerView:nil] animated:YES completion:^(UIColor * _Nullable color) {
+            if (color != nil) {
+                self.colorPickerView.color = color;
+                self.colorPickerViewSecondary.color = color;
+            }
+        }];
     }], [UIBarButtonItem KDI_barButtonItemWithTitle:@"Push" style:UIBarButtonItemStylePlain block:^(__kindof UIBarButtonItem * _Nonnull barButtonItem) {
         kstStrongify(self);
+        // using normal delegation pattern
         KSOColorPickerViewController *viewController = [[KSOColorPickerViewController alloc] initWithColorPickerView:nil];
         
         viewController.delegate = self;
+        viewController.title = @"Custom Title";
+        viewController.subtitle = @"Custom subtitle prompt";
         
         [self.navigationController pushViewController:viewController animated:YES];
     }]];
