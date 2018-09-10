@@ -36,6 +36,7 @@ FOUNDATION_EXTERN NSNotificationName const KSOColorPickerViewNotificationDidChan
 @property (assign,nonatomic) KSOColorPickerViewMode mode;
 
 @property (strong,nonatomic,null_resettable) NSNumberFormatter *RGBNumberFormatter;
+@property (strong,nonatomic,null_resettable) NSNumberFormatter *HueNumberFormatter;
 
 @end
 

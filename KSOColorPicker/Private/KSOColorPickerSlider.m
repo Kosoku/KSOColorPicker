@@ -21,6 +21,8 @@
 #import <Stanley/Stanley.h>
 
 static CGFloat const kValueViewBottomMargin = 4.0;
+static NSTimeInterval const kValueViewShowAnimationDuration = 0.5;
+static NSTimeInterval const kValueViewHideAnimationDuration = 0.33;
 
 @interface KSOColorPickerSlider ()
 @property (strong,nonatomic) KSOColorPickerValueView *valueView;
@@ -105,8 +107,17 @@ static CGFloat const kValueViewBottomMargin = 4.0;
         if (self.valueView == nil) {
             self.valueView = [[KSOColorPickerValueView alloc] initWithColorPickerSlider:self colorPickerView:self.colorPickerView];
             self.valueView.translatesAutoresizingMaskIntoConstraints = NO;
+            self.valueView.alpha = 0.0;
             [self addSubview:self.valueView];
+            [self setNeedsLayout];
+            [self layoutIfNeeded];
         }
+        
+        self.valueView.transform = CGAffineTransformMakeScale(0.5, 0.5);
+        [UIView animateWithDuration:kValueViewShowAnimationDuration delay:0.0 usingSpringWithDamping:0.5 initialSpringVelocity:0.0 options:UIViewAnimationOptionBeginFromCurrentState animations:^{
+            self.valueView.alpha = 1.0;
+            self.valueView.transform = CGAffineTransformIdentity;
+        } completion:nil];
     }
     
     return retval;
@@ -114,8 +125,14 @@ static CGFloat const kValueViewBottomMargin = 4.0;
 - (void)endTrackingWithTouch:(UITouch *)touch withEvent:(UIEvent *)event {
     [super endTrackingWithTouch:touch withEvent:event];
     
-    [self.valueView removeFromSuperview];
-    self.valueView = nil;
+    [UIView animateWithDuration:kValueViewHideAnimationDuration delay:0.0 options:UIViewAnimationOptionBeginFromCurrentState animations:^{
+        self.valueView.alpha = 0.0;
+    } completion:^(BOOL finished) {
+        if (finished) {
+            [self.valueView removeFromSuperview];
+            self.valueView = nil;
+        }
+    }];
 }
 #pragma mark *** Public Methods ***
 - (instancetype)initWithComponentType:(KSOColorPickerViewComponentType)componentType colorPickerView:(KSOColorPickerView *)colorPickerView {

@@ -31,6 +31,7 @@ NSNotificationName const KSOColorPickerViewNotificationDidChangeColor = @"KSOCol
 @property (assign,nonatomic) BOOL shouldUpdateSlidersColor;
 
 @property (class,readonly,nonatomic) NSNumberFormatter *defaultRGBNumberFormatter;
+@property (class,readonly,nonatomic) NSNumberFormatter *defaultHueNumberFormatter;
 
 - (void)setColor:(UIColor *)color notify:(BOOL)notify;
 
@@ -139,12 +140,16 @@ NSNotificationName const KSOColorPickerViewNotificationDidChangeColor = @"KSOCol
 - (void)setRGBNumberFormatter:(NSNumberFormatter *)RGBNumberFormatter {
     _RGBNumberFormatter = RGBNumberFormatter ?: KSOColorPickerView.defaultRGBNumberFormatter;
 }
+- (void)setHueNumberFormatter:(NSNumberFormatter *)HueNumberFormatter {
+    _HueNumberFormatter = HueNumberFormatter ?: KSOColorPickerView.defaultHueNumberFormatter;
+}
 #pragma mark *** Private Methods ***
 - (void)_KSOColorPickerViewInit; {
     _mode = KSOColorPickerViewModeDefault;
     _color = [KSOColorPickerView _defaultColorForMode:_mode];
     
     _RGBNumberFormatter = KSOColorPickerView.defaultRGBNumberFormatter;
+    _HueNumberFormatter = KSOColorPickerView.defaultHueNumberFormatter;
     
     _shouldUpdateSlidersColor = YES;
     
@@ -340,7 +345,15 @@ NSNotificationName const KSOColorPickerViewNotificationDidChangeColor = @"KSOCol
 + (NSNumberFormatter *)defaultRGBNumberFormatter {
     NSNumberFormatter *retval = [[NSNumberFormatter alloc] init];
     
-    retval.maximumFractionDigits = 1;
+    retval.maximumFractionDigits = 2;
+    
+    return retval;
+}
++ (NSNumberFormatter *)defaultHueNumberFormatter {
+    NSNumberFormatter *retval = [[NSNumberFormatter alloc] init];
+    
+    retval.maximumFractionDigits = 2;
+    retval.positiveSuffix = @"°";
     
     return retval;
 }
