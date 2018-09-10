@@ -82,23 +82,42 @@ FOUNDATION_EXTERN NSNotificationName const KSOColorPickerViewNotificationDidChan
 @property (assign,nonatomic) BOOL userCanSelectMode;
 
 /**
+ Set and get the color used for the component text aligned to the leading edge of a component slider.
+ 
+ The default is UIColor.blackColor.
+ */
+@property (strong,nonatomic,null_resettable) UIColor *componentColor UI_APPEARANCE_SELECTOR;
+/**
+ Set and get the font used for the component text aligned to the leading edge of a component slider.
+ 
+ The default is [UIFont systemFontOfSize:13.0].
+ */
+@property (strong,nonatomic,null_resettable) UIFont *componentFont UI_APPEARANCE_SELECTOR;
+/**
+ Set and get the font text style used for the component text aligned to the leading edge of a component slider. This must be non-nil to support dynamic type.
+ 
+ The default is UIFontTextStyleCaption1.
+ */
+@property (copy,nonatomic,nullable) UIFontTextStyle componentTextStyle UI_APPEARANCE_SELECTOR;
+
+/**
  Set and get the RGB number formatter that is used to format RGB, and W values while the user is interacting with a slider.
  
  The default is a number formatter configured for decimal display.
  */
-@property (strong,nonatomic,null_resettable) NSNumberFormatter *RGBNumberFormatter;
+@property (strong,nonatomic,null_resettable) NSNumberFormatter *RGBNumberFormatter UI_APPEARANCE_SELECTOR;
 /**
  Set and get the Hue number formatter that is used to format H values while the user is interacting with a slider.
  
  The default is a number formatter configured for decimal display with the percent symbol (°) as a suffix.
  */
-@property (strong,nonatomic,null_resettable) NSNumberFormatter *hueNumberFormatter;
+@property (strong,nonatomic,null_resettable) NSNumberFormatter *hueNumberFormatter UI_APPEARANCE_SELECTOR;
 /**
  Set and get the percent number formatter that is used to format SB, and A values while the user is interacting with a slider.
  
  The default is a number formatter configured for percentage display.
  */
-@property (strong,nonatomic,null_resettable) NSNumberFormatter *percentNumberFormatter;
+@property (strong,nonatomic,null_resettable) NSNumberFormatter *percentNumberFormatter UI_APPEARANCE_SELECTOR;
 
 @end
 

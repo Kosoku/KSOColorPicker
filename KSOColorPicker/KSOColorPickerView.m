@@ -29,10 +29,15 @@ NSNotificationName const KSOColorPickerViewNotificationDidChangeColor = @"KSOCol
 @property (strong,nonatomic) UIStackView *stackView;
 @property (strong,nonatomic) UISegmentedControl *segmentedControl;
 @property (copy,nonatomic) NSArray<KSOColorPickerSlider *> *sliders;
+@property (copy,nonatomic) NSArray<UILabel *> *componentLabels;
 
 @property (copy,nonatomic) NSArray<NSNumber *> *userSelectableModes;
 
 @property (assign,nonatomic) BOOL shouldUpdateSlidersColor;
+
+@property (class,readonly,nonatomic) UIColor *defaultComponentColor;
+@property (class,readonly,nonatomic) UIFont *defaultComponentFont;
+@property (class,readonly,nonatomic) UIFontTextStyle defaultComponentTextStyle;
 
 @property (class,readonly,nonatomic) NSNumberFormatter *defaultRGBNumberFormatter;
 @property (class,readonly,nonatomic) NSNumberFormatter *defaultHueNumberFormatter;
@@ -196,6 +201,7 @@ NSNotificationName const KSOColorPickerViewNotificationDidChangeColor = @"KSOCol
         [self setNeedsUpdateConstraints];
     }
 }
+#pragma mark -
 - (void)setRGBNumberFormatter:(NSNumberFormatter *)RGBNumberFormatter {
     _RGBNumberFormatter = RGBNumberFormatter ?: KSOColorPickerView.defaultRGBNumberFormatter;
 }
@@ -205,10 +211,36 @@ NSNotificationName const KSOColorPickerViewNotificationDidChangeColor = @"KSOCol
 - (void)setPercentNumberFormatter:(NSNumberFormatter *)percentNumberFormatter {
     _percentNumberFormatter = percentNumberFormatter ?: KSOColorPickerView.defaultPercentNumberFormatter;
 }
+#pragma mark -
+- (void)setComponentColor:(UIColor *)componentColor {
+    _componentColor = componentColor ?: KSOColorPickerView.defaultComponentColor;
+    
+    for (UILabel *label in self.componentLabels) {
+        label.textColor = _componentColor;
+    }
+}
+- (void)setComponentFont:(UIFont *)componentFont {
+    _componentFont = componentFont ?: KSOColorPickerView.defaultComponentFont;
+    
+    for (UILabel *label in self.componentLabels) {
+        label.font = _componentFont;
+    }
+}
+- (void)setComponentTextStyle:(UIFontTextStyle)componentTextStyle {
+    _componentTextStyle = componentTextStyle;
+    
+    for (UILabel *label in self.componentLabels) {
+        label.KDI_dynamicTypeTextStyle = _componentTextStyle;
+    }
+}
 #pragma mark *** Private Methods ***
 - (void)_KSOColorPickerViewInit; {
     _mode = KSOColorPickerViewModeDefault;
     _color = [KSOColorPickerView _defaultColorForMode:_mode];
+    
+    _componentColor = KSOColorPickerView.defaultComponentColor;
+    _componentFont = KSOColorPickerView.defaultComponentFont;
+    _componentTextStyle = KSOColorPickerView.defaultComponentTextStyle;
     
     _RGBNumberFormatter = KSOColorPickerView.defaultRGBNumberFormatter;
     _hueNumberFormatter = KSOColorPickerView.defaultHueNumberFormatter;
@@ -271,6 +303,7 @@ NSNotificationName const KSOColorPickerViewNotificationDidChangeColor = @"KSOCol
     }
     
     NSMutableArray *sliders = [[NSMutableArray alloc] init];
+    NSMutableArray *labels = [[NSMutableArray alloc] init];
     
     for (NSNumber *type in componentTypes) {
         UIStackView *horizontalStackView = [[UIStackView alloc] initWithFrame:CGRectZero];
@@ -288,6 +321,7 @@ NSNotificationName const KSOColorPickerViewNotificationDidChangeColor = @"KSOCol
         
         [label setContentHuggingPriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisHorizontal];
         
+        [labels addObject:label];
         [horizontalStackView addArrangedSubview:label];
         
         UISlider *slider = [self _createSliderControlForComponentType:type.integerValue];
@@ -296,6 +330,7 @@ NSNotificationName const KSOColorPickerViewNotificationDidChangeColor = @"KSOCol
         [sliders addObject:slider];
     }
     
+    self.componentLabels = labels;
     self.sliders = sliders;
 }
 #pragma mark -
@@ -314,8 +349,9 @@ NSNotificationName const KSOColorPickerViewNotificationDidChangeColor = @"KSOCol
     UILabel *retval = [[UILabel alloc] initWithFrame:CGRectZero];
     
     retval.translatesAutoresizingMaskIntoConstraints = NO;
-    retval.font = [UIFont systemFontOfSize:13.0];
-    retval.textColor = UIColor.blackColor;
+    retval.font = self.componentFont;
+    retval.textColor = self.componentColor;
+    retval.KDI_dynamicTypeTextStyle = self.componentTextStyle;
     
     switch (type) {
         case KSOColorPickerViewComponentTypeBrightness:
@@ -420,6 +456,16 @@ NSNotificationName const KSOColorPickerViewNotificationDidChangeColor = @"KSOCol
     self.mode = self.userSelectableModes[self.segmentedControl.selectedSegmentIndex].integerValue;
 }
 #pragma mark Properties
++ (UIColor *)defaultComponentColor {
+    return UIColor.blackColor;
+}
++ (UIFont *)defaultComponentFont {
+    return [UIFont systemFontOfSize:13.0];
+}
++ (UIFontTextStyle)defaultComponentTextStyle {
+    return UIFontTextStyleCaption1;
+}
+
 + (NSNumberFormatter *)defaultRGBNumberFormatter {
     NSNumberFormatter *retval = [[NSNumberFormatter alloc] init];
     
