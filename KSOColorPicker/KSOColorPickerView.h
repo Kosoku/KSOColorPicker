@@ -82,19 +82,19 @@ FOUNDATION_EXTERN NSNotificationName const KSOColorPickerViewNotificationDidChan
 @property (assign,nonatomic) BOOL userCanSelectMode;
 
 /**
- Set and get the RGB number formatter that is used to display RGB, and W values while the user is interacting with a slider.
+ Set and get the RGB number formatter that is used to format RGB, and W values while the user is interacting with a slider.
  
  The default is a number formatter configured for decimal display.
  */
 @property (strong,nonatomic,null_resettable) NSNumberFormatter *RGBNumberFormatter;
 /**
- Set and get the Hue number formatter that is used to display H values while the user is interacting with a slider.
+ Set and get the Hue number formatter that is used to format H values while the user is interacting with a slider.
  
  The default is a number formatter configured for decimal display with the percent symbol (°) as a suffix.
  */
 @property (strong,nonatomic,null_resettable) NSNumberFormatter *hueNumberFormatter;
 /**
- Set and get the percent number formatter that is used to display SB, and A values while the user is interacting with a slider.
+ Set and get the percent number formatter that is used to format SB, and A values while the user is interacting with a slider.
  
  The default is a number formatter configured for percentage display.
  */
