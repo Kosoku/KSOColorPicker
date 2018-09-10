@@ -39,6 +39,11 @@ NSNotificationName const KSOColorPickerViewNotificationDidChangeColor = @"KSOCol
 @property (class,readonly,nonatomic) UIFont *defaultComponentFont;
 @property (class,readonly,nonatomic) UIFontTextStyle defaultComponentTextStyle;
 
+@property (class,readonly,nonatomic) UIColor *defaultValueBackgroundColor;
+@property (class,readonly,nonatomic) UIColor *defaultValueForegroundColor;
+@property (class,readonly,nonatomic) UIFont *defaultValueFont;
+@property (class,readonly,nonatomic) UIFontTextStyle defaultValueTextStyle;
+
 @property (class,readonly,nonatomic) NSNumberFormatter *defaultRGBNumberFormatter;
 @property (class,readonly,nonatomic) NSNumberFormatter *defaultHueNumberFormatter;
 @property (class,readonly,nonatomic) NSNumberFormatter *defaultPercentNumberFormatter;
@@ -202,16 +207,6 @@ NSNotificationName const KSOColorPickerViewNotificationDidChangeColor = @"KSOCol
     }
 }
 #pragma mark -
-- (void)setRGBNumberFormatter:(NSNumberFormatter *)RGBNumberFormatter {
-    _RGBNumberFormatter = RGBNumberFormatter ?: KSOColorPickerView.defaultRGBNumberFormatter;
-}
-- (void)setHueNumberFormatter:(NSNumberFormatter *)hueNumberFormatter {
-    _hueNumberFormatter = hueNumberFormatter ?: KSOColorPickerView.defaultHueNumberFormatter;
-}
-- (void)setPercentNumberFormatter:(NSNumberFormatter *)percentNumberFormatter {
-    _percentNumberFormatter = percentNumberFormatter ?: KSOColorPickerView.defaultPercentNumberFormatter;
-}
-#pragma mark -
 - (void)setComponentColor:(UIColor *)componentColor {
     _componentColor = componentColor ?: KSOColorPickerView.defaultComponentColor;
     
@@ -233,6 +228,26 @@ NSNotificationName const KSOColorPickerViewNotificationDidChangeColor = @"KSOCol
         label.KDI_dynamicTypeTextStyle = _componentTextStyle;
     }
 }
+#pragma mark -
+- (void)setValueBackgroundColor:(UIColor *)valueBackgroundColor {
+    _valueBackgroundColor = valueBackgroundColor ?: KSOColorPickerView.defaultValueBackgroundColor;
+}
+- (void)setValueForegroundColor:(UIColor *)valueForegroundColor {
+    _valueForegroundColor = valueForegroundColor ?: KSOColorPickerView.defaultValueForegroundColor;
+}
+- (void)setValueFont:(UIFont *)valueFont {
+    _valueFont = valueFont ?: KSOColorPickerView.defaultValueFont;
+}
+#pragma mark -
+- (void)setRGBNumberFormatter:(NSNumberFormatter *)RGBNumberFormatter {
+    _RGBNumberFormatter = RGBNumberFormatter ?: KSOColorPickerView.defaultRGBNumberFormatter;
+}
+- (void)setHueNumberFormatter:(NSNumberFormatter *)hueNumberFormatter {
+    _hueNumberFormatter = hueNumberFormatter ?: KSOColorPickerView.defaultHueNumberFormatter;
+}
+- (void)setPercentNumberFormatter:(NSNumberFormatter *)percentNumberFormatter {
+    _percentNumberFormatter = percentNumberFormatter ?: KSOColorPickerView.defaultPercentNumberFormatter;
+}
 #pragma mark *** Private Methods ***
 - (void)_KSOColorPickerViewInit; {
     _mode = KSOColorPickerViewModeDefault;
@@ -241,6 +256,11 @@ NSNotificationName const KSOColorPickerViewNotificationDidChangeColor = @"KSOCol
     _componentColor = KSOColorPickerView.defaultComponentColor;
     _componentFont = KSOColorPickerView.defaultComponentFont;
     _componentTextStyle = KSOColorPickerView.defaultComponentTextStyle;
+    
+    _valueBackgroundColor = KSOColorPickerView.defaultValueBackgroundColor;
+    _valueForegroundColor = KSOColorPickerView.defaultValueForegroundColor;
+    _valueFont = KSOColorPickerView.defaultValueFont;
+    _valueTextStyle = KSOColorPickerView.defaultValueTextStyle;
     
     _RGBNumberFormatter = KSOColorPickerView.defaultRGBNumberFormatter;
     _hueNumberFormatter = KSOColorPickerView.defaultHueNumberFormatter;
@@ -465,7 +485,20 @@ NSNotificationName const KSOColorPickerViewNotificationDidChangeColor = @"KSOCol
 + (UIFontTextStyle)defaultComponentTextStyle {
     return UIFontTextStyleCaption1;
 }
-
+#pragma mark -
++ (UIColor *)defaultValueBackgroundColor {
+    return UIColor.blackColor;
+}
++ (UIColor *)defaultValueForegroundColor {
+    return UIColor.whiteColor;
+}
++ (UIFont *)defaultValueFont {
+    return [UIFont systemFontOfSize:17.0];
+}
++ (UIFontTextStyle)defaultValueTextStyle {
+    return UIFontTextStyleBody;
+}
+#pragma mark -
 + (NSNumberFormatter *)defaultRGBNumberFormatter {
     NSNumberFormatter *retval = [[NSNumberFormatter alloc] init];
     

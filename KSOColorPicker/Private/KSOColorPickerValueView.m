@@ -39,7 +39,7 @@ static CGSize const kTriangleSize = {.width=12.0, .height=8.0};
     return NO;
 }
 - (void)drawRect:(CGRect)rect {
-    [UIColor.blackColor setFill];
+    [self.colorPickerView.valueBackgroundColor setFill];
     [[UIBezierPath bezierPathWithRoundedRect:CGRectMake(0, 0, CGRectGetWidth(self.bounds), CGRectGetHeight(self.bounds) - kTriangleSize.height) cornerRadius:kCornerRadius] fill];
     
     UIBezierPath *path = [UIBezierPath bezierPath];
@@ -63,8 +63,9 @@ static CGSize const kTriangleSize = {.width=12.0, .height=8.0};
     
     _label = [[UILabel alloc] initWithFrame:CGRectZero];
     _label.translatesAutoresizingMaskIntoConstraints = NO;
-    _label.textColor = UIColor.whiteColor;
-    _label.font = [UIFont systemFontOfSize:17.0];
+    _label.textColor = _colorPickerView.valueForegroundColor;
+    _label.font = _colorPickerView.valueFont;
+    _label.KDI_dynamicTypeTextStyle = _colorPickerView.valueTextStyle;
     [self addSubview:_label];
     
     [self _updateLabelText];

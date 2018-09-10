@@ -101,6 +101,31 @@ FOUNDATION_EXTERN NSNotificationName const KSOColorPickerViewNotificationDidChan
 @property (copy,nonatomic,nullable) UIFontTextStyle componentTextStyle UI_APPEARANCE_SELECTOR;
 
 /**
+ Set and get the color used to draw the background of the value tooltip when the user interacts with a component slider.
+ 
+ The default is UIColor.blackColor.
+ */
+@property (strong,nonatomic,null_resettable) UIColor *valueBackgroundColor UI_APPEARANCE_SELECTOR;
+/**
+ Set and get the color used to draw the foreground (text) of the value tooltip when the user interacts with a component slider.
+ 
+ The default is UIColor.whiteColor.
+ */
+@property (strong,nonatomic,null_resettable) UIColor *valueForegroundColor UI_APPEARANCE_SELECTOR;
+/**
+ Set and get the font used to draw the foreground (text) of the value tooltip when the user interacts with a component slider.
+ 
+ The default is [UIFont systemFontOfSize:17.0].
+ */
+@property (strong,nonatomic,null_resettable) UIFont *valueFont UI_APPEARANCE_SELECTOR;
+/**
+ Set and get the text style used for the text of the value tooltip when the user interacts with a component slider. This must be non-nil to support dynamic type.
+ 
+ The default is UIFontTextStyleBody.
+ */
+@property (strong,nonatomic,nullable) UIFontTextStyle valueTextStyle UI_APPEARANCE_SELECTOR;
+
+/**
  Set and get the RGB number formatter that is used to format RGB, and W values while the user is interacting with a slider.
  
  The default is a number formatter configured for decimal display.
