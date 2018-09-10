@@ -17,6 +17,7 @@
 #import "KSOColorPickerViewPrivate.h"
 #import "KSOColorPickerSlider.h"
 #import "KSOColorPickerSwatchView.h"
+#import "NSBundle+KSOColorPickerPrivateExtensions.h"
 
 #import <Stanley/Stanley.h>
 #import <Ditko/Ditko.h>
@@ -318,28 +319,28 @@ NSNotificationName const KSOColorPickerViewNotificationDidChangeColor = @"KSOCol
     
     switch (type) {
         case KSOColorPickerViewComponentTypeBrightness:
-            retval.text = @"Brightness";
+            retval.text = NSLocalizedStringWithDefaultValue(@"label.brightness", nil, NSBundle.KSO_colorPickerFrameworkBundle, @"Brightness", @"brightness label");
             break;
         case KSOColorPickerViewComponentTypeSaturation:
-            retval.text = @"Saturation";
+            retval.text = NSLocalizedStringWithDefaultValue(@"label.saturation", nil, NSBundle.KSO_colorPickerFrameworkBundle, @"Saturation", @"saturation label");
             break;
         case KSOColorPickerViewComponentTypeHue:
-            retval.text = @"Hue";
+            retval.text = NSLocalizedStringWithDefaultValue(@"label.hue", nil, NSBundle.KSO_colorPickerFrameworkBundle, @"Hue", @"hue label");
             break;
         case KSOColorPickerViewComponentTypeRed:
-            retval.text = @"Red";
+            retval.text = NSLocalizedStringWithDefaultValue(@"label.red", nil, NSBundle.KSO_colorPickerFrameworkBundle, @"Red", @"red label");
             break;
         case KSOColorPickerViewComponentTypeGreen:
-            retval.text = @"Green";
+            retval.text = NSLocalizedStringWithDefaultValue(@"label.green", nil, NSBundle.KSO_colorPickerFrameworkBundle, @"Green", @"green label");
             break;
         case KSOColorPickerViewComponentTypeBlue:
-            retval.text = @"Blue";
+            retval.text = NSLocalizedStringWithDefaultValue(@"label.blue", nil, NSBundle.KSO_colorPickerFrameworkBundle, @"Blue", @"blue label");
             break;
         case KSOColorPickerViewComponentTypeAlpha:
-            retval.text = @"Alpha";
+            retval.text = NSLocalizedStringWithDefaultValue(@"label.alpha", nil, NSBundle.KSO_colorPickerFrameworkBundle, @"Alpha", @"alpha label");
             break;
         case KSOColorPickerViewComponentTypeWhite:
-            retval.text = @"White";
+            retval.text = NSLocalizedStringWithDefaultValue(@"label.white", nil, NSBundle.KSO_colorPickerFrameworkBundle, @"White", @"white label");
             break;
     }
     
@@ -371,17 +372,17 @@ NSNotificationName const KSOColorPickerViewNotificationDidChangeColor = @"KSOCol
 + (NSString *)_userSelectableTitleForMode:(KSOColorPickerViewMode)mode; {
     switch (mode) {
         case KSOColorPickerViewModeHSBA:
-            return @"HSBA";
+            return NSLocalizedStringWithDefaultValue(@"label.hsba", nil, NSBundle.KSO_colorPickerFrameworkBundle, @"HSBA", @"hsba label");
         case KSOColorPickerViewModeRGBA:
-            return @"RGBA";
+            return NSLocalizedStringWithDefaultValue(@"label.rgba", nil, NSBundle.KSO_colorPickerFrameworkBundle, @"RGBA", @"rgba label");
         case KSOColorPickerViewModeWA:
-            return @"WA";
+            return NSLocalizedStringWithDefaultValue(@"label.wa", nil, NSBundle.KSO_colorPickerFrameworkBundle, @"WA", @"wa label");
         case KSOColorPickerViewModeW:
-            return @"W";
+            return NSLocalizedStringWithDefaultValue(@"label.w", nil, NSBundle.KSO_colorPickerFrameworkBundle, @"W", @"w label");
         case KSOColorPickerViewModeHSB:
-            return @"HSB";
+            return NSLocalizedStringWithDefaultValue(@"label.hsb", nil, NSBundle.KSO_colorPickerFrameworkBundle, @"HSB", @"hsb label");
         case KSOColorPickerViewModeRGB:
-            return @"RGB";
+            return NSLocalizedStringWithDefaultValue(@"label.rgb", nil, NSBundle.KSO_colorPickerFrameworkBundle, @"RGB", @"rgb label");
     }
 }
 #pragma mark Actions
@@ -430,7 +431,7 @@ NSNotificationName const KSOColorPickerViewNotificationDidChangeColor = @"KSOCol
     NSNumberFormatter *retval = [[NSNumberFormatter alloc] init];
     
     retval.maximumFractionDigits = 2;
-    retval.positiveSuffix = @"°";
+    retval.positiveSuffix = NSLocalizedStringWithDefaultValue(@"format.positive-suffix.hue", nil, NSBundle.KSO_colorPickerFrameworkBundle, @"°", @"format positive suffix hue (e.g. 270°)");
     
     return retval;
 }

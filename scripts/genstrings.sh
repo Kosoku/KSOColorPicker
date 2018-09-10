@@ -1,0 +1,1 @@
+find $SRCROOT/KSOColorPicker/ -name "*.m" | xargs genstrings -o $SRCROOT/KSOColorPicker/en.lproj
