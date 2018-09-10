@@ -10,6 +10,8 @@
 		073813502146E13300D9C515 /* NSBundle+KSOColorPickerPrivateExtensions.h in Headers */ = {isa = PBXBuildFile; fileRef = 0738134E2146E13300D9C515 /* NSBundle+KSOColorPickerPrivateExtensions.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		073813512146E13300D9C515 /* NSBundle+KSOColorPickerPrivateExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 0738134F2146E13300D9C515 /* NSBundle+KSOColorPickerPrivateExtensions.m */; };
 		073813542146E37700D9C515 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 073813522146E37700D9C515 /* Localizable.strings */; };
+		0738135B214704F500D9C515 /* KSOColorPickerViewController.h in Headers */ = {isa = PBXBuildFile; fileRef = 07381359214704F500D9C515 /* KSOColorPickerViewController.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		0738135C214704F500D9C515 /* KSOColorPickerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0738135A214704F500D9C515 /* KSOColorPickerViewController.m */; };
 		074747E42145A2AB00DBA04A /* KSOColorPicker.h in Headers */ = {isa = PBXBuildFile; fileRef = 074747E22145A2AB00DBA04A /* KSOColorPicker.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		074747ED2145A43200DBA04A /* KSOColorPickerView.h in Headers */ = {isa = PBXBuildFile; fileRef = 074747EB2145A43200DBA04A /* KSOColorPickerView.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		074747EE2145A43200DBA04A /* KSOColorPickerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 074747EC2145A43200DBA04A /* KSOColorPickerView.m */; };
@@ -76,6 +78,8 @@
 		073813532146E37700D9C515 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		073813552146E3FD00D9C515 /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/Localizable.strings; sourceTree = "<group>"; };
 		073813562146E42F00D9C515 /* ro */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ro; path = ro.lproj/Localizable.strings; sourceTree = "<group>"; };
+		07381359214704F500D9C515 /* KSOColorPickerViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KSOColorPickerViewController.h; sourceTree = "<group>"; };
+		0738135A214704F500D9C515 /* KSOColorPickerViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = KSOColorPickerViewController.m; sourceTree = "<group>"; };
 		074747DF2145A2AB00DBA04A /* KSOColorPicker.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = KSOColorPicker.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		074747E22145A2AB00DBA04A /* KSOColorPicker.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KSOColorPicker.h; sourceTree = "<group>"; };
 		074747E32145A2AB00DBA04A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -180,6 +184,8 @@
 			children = (
 				074747EB2145A43200DBA04A /* KSOColorPickerView.h */,
 				074747EC2145A43200DBA04A /* KSOColorPickerView.m */,
+				07381359214704F500D9C515 /* KSOColorPickerViewController.h */,
+				0738135A214704F500D9C515 /* KSOColorPickerViewController.m */,
 				074748232145B8A300DBA04A /* Private */,
 			);
 			name = Source;
@@ -244,6 +250,7 @@
 				074747ED2145A43200DBA04A /* KSOColorPickerView.h in Headers */,
 				0747482C2145D22E00DBA04A /* KSOColorPickerSwatchView.h in Headers */,
 				074748262145B8BA00DBA04A /* KSOColorPickerSlider.h in Headers */,
+				0738135B214704F500D9C515 /* KSOColorPickerViewController.h in Headers */,
 				074748302146368300DBA04A /* KSOColorPickerValueView.h in Headers */,
 				073813502146E13300D9C515 /* NSBundle+KSOColorPickerPrivateExtensions.h in Headers */,
 			);
@@ -387,6 +394,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0738135C214704F500D9C515 /* KSOColorPickerViewController.m in Sources */,
 				074748272145B8BA00DBA04A /* KSOColorPickerSlider.m in Sources */,
 				074747EE2145A43200DBA04A /* KSOColorPickerView.m in Sources */,
 				073813512146E13300D9C515 /* NSBundle+KSOColorPickerPrivateExtensions.m in Sources */,

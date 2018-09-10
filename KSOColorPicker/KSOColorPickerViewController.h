@@ -1,8 +1,8 @@
 //
-//  KSOColorPicker.h
-//  KSOColorPicker
+//  KSOColorPickerViewController.h
+//  KSOColorPicker-iOS
 //
-//  Created by William Towe on 9/9/18.
+//  Created by William Towe on 9/10/18.
 //  Copyright © 2018 Kosoku Interactive, LLC. All rights reserved.
 //
 //  Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met:
@@ -15,13 +15,29 @@
 
 #import <UIKit/UIKit.h>
 
-//! Project version number for KSOColorPicker.
-FOUNDATION_EXPORT double KSOColorPickerVersionNumber;
+NS_ASSUME_NONNULL_BEGIN
 
-//! Project version string for KSOColorPicker.
-FOUNDATION_EXPORT const unsigned char KSOColorPickerVersionString[];
+@class KSOColorPickerView;
+@protocol KSOColorPickerViewControllerDelegate;
 
-// In this header, you should import all the public headers of your framework using statements like #import <KSOColorPicker/PublicHeader.h>
+@interface KSOColorPickerViewController : UIViewController
 
-#import <KSOColorPicker/KSOColorPickerView.h>
-#import <KSOColorPicker/KSOColorPickerViewController.h>
+@property (weak,nonatomic,nullable) id<KSOColorPickerViewControllerDelegate> delegate;
+
+@property (copy,nonatomic,nullable) NSString *subtitle;
+
+- (instancetype)initWithColorPickerView:(nullable KSOColorPickerView *)colorPickerView NS_DESIGNATED_INITIALIZER;
+
+- (instancetype)initWithNibName:(nullable NSString *)nibNameOrNil bundle:(nullable NSBundle *)nibBundleOrNil NS_UNAVAILABLE;
+- (nullable instancetype)initWithCoder:(NSCoder *)aDecoder NS_UNAVAILABLE;
+
+@end
+
+@protocol KSOColorPickerViewControllerDelegate <NSObject>
+@optional
+- (void)colorPickerViewController:(KSOColorPickerViewController *)viewController didFinishPickingColor:(UIColor *)color;
+- (void)colorPickerViewControllerDidCancel:(KSOColorPickerViewController *)viewController;
+- (void)colorPickerViewControllerDidDismiss:(KSOColorPickerViewController *)viewController;
+@end
+
+NS_ASSUME_NONNULL_END
