@@ -26,7 +26,7 @@ NSNotificationName const KSOColorPickerViewNotificationDidChangeColor = @"KSOCol
 @interface KSOColorPickerView ()
 @property (strong,nonatomic) KSOColorPickerSwatchView *swatchView;
 @property (strong,nonatomic) UIStackView *stackView;
-@property (readonly,nonatomic) NSArray<KSOColorPickerSlider *> *sliders;
+@property (copy,nonatomic) NSArray<KSOColorPickerSlider *> *sliders;
 
 @property (assign,nonatomic) BOOL shouldUpdateSlidersColor;
 
@@ -35,6 +35,7 @@ NSNotificationName const KSOColorPickerViewNotificationDidChangeColor = @"KSOCol
 - (void)_KSOColorPickerViewInit;
 - (void)_updateSliderControls;
 - (KSOColorPickerSlider *)_createSliderControlForComponentType:(KSOColorPickerViewComponentType)type;
+- (UILabel *)_createLabelForComponentType:(KSOColorPickerViewComponentType)type;
 
 + (UIColor *)_defaultColorForMode:(KSOColorPickerViewMode)mode;
 @end
@@ -149,13 +150,33 @@ NSNotificationName const KSOColorPickerViewNotificationDidChangeColor = @"KSOCol
         [view removeFromSuperview];
     }
     
+    NSMutableArray *sliders = [[NSMutableArray alloc] init];
+    
     for (NSNumber *type in componentTypes) {
+        UIStackView *horizontalStackView = [[UIStackView alloc] initWithFrame:CGRectZero];
+        
+        horizontalStackView.translatesAutoresizingMaskIntoConstraints = NO;
+        horizontalStackView.axis = UILayoutConstraintAxisHorizontal;
+        horizontalStackView.spacing = 8.0;
+        horizontalStackView.alignment = UIStackViewAlignmentCenter;
+        
+        [self.stackView addArrangedSubview:horizontalStackView];
+        
+        [NSLayoutConstraint activateConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[view]|" options:0 metrics:nil views:@{@"view": horizontalStackView}]];
+        
+        UILabel *label = [self _createLabelForComponentType:type.integerValue];
+        
+        [label setContentHuggingPriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisHorizontal];
+        
+        [horizontalStackView addArrangedSubview:label];
+        
         UISlider *slider = [self _createSliderControlForComponentType:type.integerValue];
         
-        [self.stackView addArrangedSubview:slider];
-        
-        [NSLayoutConstraint activateConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[view]|" options:0 metrics:nil views:@{@"view": slider}]];
+        [horizontalStackView addArrangedSubview:slider];
+        [sliders addObject:slider];
     }
+    
+    self.sliders = sliders;
 }
 - (KSOColorPickerSlider *)_createSliderControlForComponentType:(KSOColorPickerViewComponentType)type; {
     KSOColorPickerSlider *retval = [[KSOColorPickerSlider alloc] initWithComponentType:type colorPickerView:self];
@@ -165,6 +186,42 @@ NSNotificationName const KSOColorPickerViewNotificationDidChangeColor = @"KSOCol
     [retval addTarget:self action:@selector(_sliderValueChanged:) forControlEvents:UIControlEventValueChanged];
     [retval addTarget:self action:@selector(_sliderTouchDown:) forControlEvents:UIControlEventTouchDown];
     [retval addTarget:self action:@selector(_sliderTouchUp:) forControlEvents:UIControlEventTouchUpInside|UIControlEventTouchUpOutside|UIControlEventTouchCancel];
+    
+    return retval;
+}
+- (UILabel *)_createLabelForComponentType:(KSOColorPickerViewComponentType)type; {
+    UILabel *retval = [[UILabel alloc] initWithFrame:CGRectZero];
+    
+    retval.translatesAutoresizingMaskIntoConstraints = NO;
+    retval.font = [UIFont systemFontOfSize:13.0];
+    retval.textColor = UIColor.blackColor;
+    
+    switch (type) {
+        case KSOColorPickerViewComponentTypeBrightness:
+            retval.text = @"Brightness";
+            break;
+        case KSOColorPickerViewComponentTypeSaturation:
+            retval.text = @"Saturation";
+            break;
+        case KSOColorPickerViewComponentTypeHue:
+            retval.text = @"Hue";
+            break;
+        case KSOColorPickerViewComponentTypeRed:
+            retval.text = @"Red";
+            break;
+        case KSOColorPickerViewComponentTypeGreen:
+            retval.text = @"Green";
+            break;
+        case KSOColorPickerViewComponentTypeBlue:
+            retval.text = @"Blue";
+            break;
+        case KSOColorPickerViewComponentTypeAlpha:
+            retval.text = @"Alpha";
+            break;
+        case KSOColorPickerViewComponentTypeWhite:
+            retval.text = @"White";
+            break;
+    }
     
     return retval;
 }
@@ -221,10 +278,6 @@ NSNotificationName const KSOColorPickerViewNotificationDidChangeColor = @"KSOCol
 }
 - (IBAction)_sliderTouchUp:(id)sender {
     self.shouldUpdateSlidersColor = YES;
-}
-
-- (NSArray<KSOColorPickerSlider *> *)sliders {
-    return self.stackView.arrangedSubviews;
 }
 
 @end
