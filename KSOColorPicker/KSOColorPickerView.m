@@ -89,6 +89,8 @@ NSNotificationName const KSOColorPickerViewNotificationDidChangeColor = @"KSOCol
     _mode = mode;
     
     [self _updateSliderControls];
+    
+    self.color = [KSOColorPickerView _defaultColorForMode:_mode];
 }
 
 - (void)_KSOColorPickerViewInit; {
@@ -171,23 +173,17 @@ NSNotificationName const KSOColorPickerViewNotificationDidChangeColor = @"KSOCol
     UIColor *retval;
     
     switch (mode) {
+        case KSOColorPickerViewModeRGB:
         case KSOColorPickerViewModeRGBA:
             retval = KDIColorRGBA(0.0, 0.0, 0.0, 1.0);
             break;
         case KSOColorPickerViewModeW:
-            retval = KDIColorW(0.0);
-            break;
         case KSOColorPickerViewModeWA:
             retval = KDIColorWA(0.0, 1.0);
             break;
         case KSOColorPickerViewModeHSB:
-            retval = KDIColorHSB(0.0, 0.0, 0.0);
-            break;
-        case KSOColorPickerViewModeRGB:
-            retval = KDIColorRGB(0.0, 0.0, 0.0);
-            break;
         case KSOColorPickerViewModeHSBA:
-            retval = KDIColorHSBA(0.0, 0.0, 0.0, 1.0);
+            retval = KDIColorHSBA(0.0, 1.0, 1.0, 1.0);
             break;
         default:
             break;

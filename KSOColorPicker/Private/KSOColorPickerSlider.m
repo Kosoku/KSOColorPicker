@@ -28,6 +28,10 @@
 
 @implementation KSOColorPickerSlider
 
+- (void)dealloc {
+    [NSNotificationCenter.defaultCenter removeObserver:self];
+}
+
 - (void)drawRect:(CGRect)rect {
     CGRect trackRect = [self trackRectForBounds:self.bounds];
     
@@ -35,14 +39,24 @@
         UIColor *color;
         
         switch (self.componentType) {
-            case KSOColorPickerViewComponentTypeBrightness:
-                color = KDIColorHSB(1.0, 1.0, (CGFloat)i / CGRectGetWidth(trackRect));
+            case KSOColorPickerViewComponentTypeBrightness: {
+                CGFloat hue, saturation;
+                
+                [self.colorPickerView.color getHue:&hue saturation:&saturation brightness:NULL alpha:NULL];
+                
+                color = KDIColorHSB(hue, saturation, (CGFloat)i / CGRectGetWidth(trackRect));
+            }
                 break;
             case KSOColorPickerViewComponentTypeHue:
                 color = KDIColorHSB((CGFloat)i / CGRectGetWidth(trackRect), 1.0, 1.0);
                 break;
-            case KSOColorPickerViewComponentTypeSaturation:
-                color = KDIColorHSB(1.0, (CGFloat)i / CGRectGetWidth(trackRect), 1.0);
+            case KSOColorPickerViewComponentTypeSaturation: {
+                CGFloat hue, brightness;
+                
+                [self.colorPickerView.color getHue:&hue saturation:NULL brightness:&brightness alpha:NULL];
+                
+                color = KDIColorHSB(hue, (CGFloat)i / CGRectGetWidth(trackRect), brightness);
+            }
                 break;
             case KSOColorPickerViewComponentTypeRed:
                 color = KDIColorRGB((CGFloat)i / CGRectGetWidth(trackRect), 0.0, 0.0);
@@ -81,6 +95,8 @@
     self.maximumValue = 1.0;
     
     [self _updateValue];
+    
+    [NSNotificationCenter.defaultCenter addObserver:self selector:@selector(_colorPickerViewDidChangeColor:) name:KSOColorPickerViewNotificationDidChangeColor object:_colorPickerView];
     
     return self;
 }
@@ -129,6 +145,18 @@
             break;
         case KSOColorPickerViewComponentTypeHue:
             self.value = hue;
+            break;
+        default:
+            break;
+    }
+}
+
+- (void)_colorPickerViewDidChangeColor:(NSNotification *)note {
+    switch (self.componentType) {
+        case KSOColorPickerViewComponentTypeAlpha:
+        case KSOColorPickerViewComponentTypeSaturation:
+        case KSOColorPickerViewComponentTypeBrightness:
+            [self setNeedsDisplay];
             break;
         default:
             break;
