@@ -17,12 +17,16 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
+                            <view contentMode="scaleToFill" placeholderIntrinsicWidth="343" placeholderIntrinsicHeight="128" translatesAutoresizingMaskIntoConstraints="NO" id="bqs-IM-nWn" customClass="KSOColorPickerView">
+                                <rect key="frame" x="16" y="68" width="343" height="128"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            </view>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="tP4-Gg-D3u" customClass="KDIPickerViewButton">
                                 <rect key="frame" x="164" y="30" width="46" height="30"/>
                                 <state key="normal" title="Button"/>
                             </button>
-                            <view contentMode="scaleToFill" placeholderIntrinsicWidth="343" placeholderIntrinsicHeight="128" translatesAutoresizingMaskIntoConstraints="NO" id="bqs-IM-nWn" customClass="KSOColorPickerView">
-                                <rect key="frame" x="16" y="68" width="343" height="128"/>
+                            <view contentMode="scaleToFill" placeholderIntrinsicWidth="343" placeholderIntrinsicHeight="128" translatesAutoresizingMaskIntoConstraints="NO" id="mpQ-ci-Kl4" customClass="KSOColorPickerView">
+                                <rect key="frame" x="16" y="204" width="343" height="128"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             </view>
                         </subviews>
@@ -30,14 +34,18 @@
                         <constraints>
                             <constraint firstItem="bqs-IM-nWn" firstAttribute="top" secondItem="tP4-Gg-D3u" secondAttribute="bottom" constant="8" id="1XF-5z-5Zz"/>
                             <constraint firstItem="bqs-IM-nWn" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="16" id="5p8-Ke-yAS"/>
+                            <constraint firstItem="mpQ-ci-Kl4" firstAttribute="top" secondItem="bqs-IM-nWn" secondAttribute="bottom" constant="8" id="Caz-Nj-o4W"/>
                             <constraint firstItem="tP4-Gg-D3u" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="10" id="I9U-lK-e5i"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="bqs-IM-nWn" secondAttribute="trailing" constant="16" id="RcW-qJ-Lt5"/>
                             <constraint firstItem="tP4-Gg-D3u" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="aKh-L4-KGG"/>
+                            <constraint firstItem="mpQ-ci-Kl4" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="16" id="iuf-Ha-zWv"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="mpQ-ci-Kl4" secondAttribute="trailing" constant="16" id="n5h-rJ-rjC"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>
                     <connections>
                         <outlet property="colorPickerView" destination="bqs-IM-nWn" id="PxD-rk-enD"/>
+                        <outlet property="colorPickerViewSecondary" destination="mpQ-ci-Kl4" id="sOT-rZ-Wae"/>
                         <outlet property="modePickerViewButton" destination="tP4-Gg-D3u" id="zX6-3r-CIe"/>
                     </connections>
                 </viewController>

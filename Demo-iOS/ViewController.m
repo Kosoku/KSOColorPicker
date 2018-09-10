@@ -27,6 +27,7 @@
 @interface ViewController ()
 @property (weak,nonatomic) IBOutlet KDIPickerViewButton *modePickerViewButton;
 @property (weak,nonatomic) IBOutlet KSOColorPickerView *colorPickerView;
+@property (weak,nonatomic) IBOutlet KSOColorPickerView *colorPickerViewSecondary;
 
 @end
 
@@ -39,6 +40,7 @@
         return [NSString stringWithFormat:@"Mode: %@",row.pickerViewButtonRowTitle];
     } didSelectRowBlock:^(ColorPickerViewMode * _Nonnull row) {
         self.colorPickerView.mode = row.mode;
+        self.colorPickerViewSecondary.mode = row.mode;
     }];
     
     [self.modePickerViewButton selectRow:[self.modePickerViewButton.KDI_pickerViewButtonRows indexOfObjectPassingTest:^BOOL(ColorPickerViewMode * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
