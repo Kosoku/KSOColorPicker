@@ -7,6 +7,8 @@
 
 *KSOColorPicker* is a iOS framework to facilitate picking colors by the user. It support WA, RGBA, and HSBA modes. It support drag and drop on all compatible iOS devices.
 
+![iOS](screenshots/iOS.gif)
+
 ### Installation
 
 You can install *KSOColorPicker* using [cocoapods](https://cocoapods.org/), [Carthage](https://github.com/Carthage/Carthage), or as a framework. 
