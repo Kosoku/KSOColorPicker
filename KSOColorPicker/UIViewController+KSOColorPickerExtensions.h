@@ -17,13 +17,35 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+/**
+ Block that is invoked when the user has chosen a color or cancelled the interaction.
+ 
+ @param color The color that was chosen or nil
+ */
 typedef void(^KSOColorPickerViewControllerCompletionBlock)(UIColor * _Nullable color);
 
 @class KSOColorPickerViewController;
 
+/**
+ Convenience category methods to present or push a KSOColorPickerViewController instance and invoke a completion block when the user finishes interacting with the view controller.
+ */
 @interface UIViewController (KSOColorPickerExtensions)
 
+/**
+ Presents the *viewController* instance, optionally *animated*, and invokes the *completion* block when the interaction is finished.
+ 
+ @param viewController The view controller to present
+ @param animated Whether to animate the presentation
+ @param completion The block to invoke when the interaction is finished
+ */
 - (void)KSO_presentColorPickerViewController:(KSOColorPickerViewController *)viewController animated:(BOOL)animated completion:(KSOColorPickerViewControllerCompletionBlock)completion;
+/**
+ Pushes the *viewController* on the receiver's *navigationController* stack, optionally *animated*, and invokes the *completion* block when the interaction is finished.
+ 
+ @param viewController The view controller to push
+ @param animated Whether to animate the push
+ @param completion The block to invoke when the interaction is finished
+ */
 - (void)KSO_pushColorPickerViewController:(KSOColorPickerViewController *)viewController animated:(BOOL)animated completion:(KSOColorPickerViewControllerCompletionBlock)completion;
 
 @end
