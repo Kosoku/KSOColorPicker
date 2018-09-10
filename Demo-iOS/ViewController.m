@@ -28,14 +28,12 @@
 
 @implementation ViewController
 
-- (NSString *)title {
-    return @"KSOColorPicker";
-}
-
 - (void)viewDidLoad {
     [super viewDidLoad];
     
     kstWeakify(self);
+    
+    self.title = @"KSOColorPicker";
     
     [self.userCanSelectModeSwitch KDI_addBlock:^(__kindof UIControl * _Nonnull control, UIControlEvents controlEvents) {
         kstStrongify(self);
