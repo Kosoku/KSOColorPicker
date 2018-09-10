@@ -26,12 +26,16 @@ NSNotificationName const KSOColorPickerViewNotificationDidChangeColor = @"KSOCol
 @interface KSOColorPickerView () <UIDragInteractionDelegate, UIDropInteractionDelegate>
 @property (strong,nonatomic) KSOColorPickerSwatchView *swatchView;
 @property (strong,nonatomic) UIStackView *stackView;
+@property (strong,nonatomic) UISegmentedControl *segmentedControl;
 @property (copy,nonatomic) NSArray<KSOColorPickerSlider *> *sliders;
+
+@property (copy,nonatomic) NSArray<NSNumber *> *userSelectableModes;
 
 @property (assign,nonatomic) BOOL shouldUpdateSlidersColor;
 
 @property (class,readonly,nonatomic) NSNumberFormatter *defaultRGBNumberFormatter;
 @property (class,readonly,nonatomic) NSNumberFormatter *defaultHueNumberFormatter;
+@property (class,readonly,nonatomic) NSNumberFormatter *defaultPercentNumberFormatter;
 
 - (void)setColor:(UIColor *)color notify:(BOOL)notify;
 
@@ -41,6 +45,7 @@ NSNotificationName const KSOColorPickerViewNotificationDidChangeColor = @"KSOCol
 - (UILabel *)_createLabelForComponentType:(KSOColorPickerViewComponentType)type;
 
 + (UIColor *)_defaultColorForMode:(KSOColorPickerViewMode)mode;
++ (NSString *)_userSelectableTitleForMode:(KSOColorPickerViewMode)mode;
 @end
 
 @implementation KSOColorPickerView
@@ -61,6 +66,36 @@ NSNotificationName const KSOColorPickerViewNotificationDidChangeColor = @"KSOCol
     
     return self;
 }
+#pragma mark -
++ (BOOL)requiresConstraintBasedLayout {
+    return YES;
+}
+- (void)updateConstraints {
+    NSMutableArray *temp = [[NSMutableArray alloc] init];
+    
+    if (self.segmentedControl != nil) {
+        [temp addObjectsFromArray:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-[view]-|" options:0 metrics:nil views:@{@"view": self.segmentedControl}]];
+        [temp addObjectsFromArray:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-[view]" options:0 metrics:nil views:@{@"view": self.segmentedControl, @"top": self.swatchView}]];
+    }
+    
+    [temp addObjectsFromArray:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-[view]-|" options:0 metrics:nil views:@{@"view": self.swatchView}]];
+    
+    CGFloat swatchViewHeight = 32.0;
+    
+    if (self.segmentedControl == nil) {
+        [temp addObjectsFromArray:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-[view(==height)]" options:0 metrics:@{@"height": @(swatchViewHeight)} views:@{@"view": self.swatchView}]];
+    }
+    else {
+        [temp addObjectsFromArray:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[top]-[view(==height)]" options:0 metrics:@{@"height": @(swatchViewHeight)} views:@{@"view": self.swatchView, @"top": self.segmentedControl}]];
+    }
+    
+    [temp addObjectsFromArray:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-[view]-|" options:0 metrics:nil views:@{@"view": self.stackView}]];
+    [temp addObjectsFromArray:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[top]-[view]-|" options:0 metrics:nil views:@{@"view": self.stackView, @"top": self.swatchView}]];
+    
+    self.KDI_customConstraints = temp;
+    
+    [super updateConstraints];
+}
 #pragma mark UIDragInteractionDelegate
 - (NSArray<UIDragItem *> *)dragInteraction:(UIDragInteraction *)interaction itemsForBeginningSession:(id<UIDragSession>)session {
     NSItemProvider *provider = [[NSItemProvider alloc] initWithObject:self.color];
@@ -79,18 +114,12 @@ NSNotificationName const KSOColorPickerViewNotificationDidChangeColor = @"KSOCol
         return NO;
     }
     
-    for (UIDragItem *item in session.items) {
-        if ([item isKindOfClass:UIColor.class]) {
-            return YES;
-        }
-    }
-    
     return [session canLoadObjectsOfClass:UIColor.class];
 }
 - (UIDropProposal *)dropInteraction:(UIDropInteraction *)interaction sessionDidUpdate:(id<UIDropSession>)session {
     UIDropOperation operation = UIDropOperationCancel;
     
-    if (CGRectContainsPoint(self.swatchView.frame, [session locationInView:self.swatchView])) {
+    if (CGRectContainsPoint(self.swatchView.frame, [session locationInView:self])) {
         operation = UIDropOperationCopy;
     }
     
@@ -109,7 +138,7 @@ NSNotificationName const KSOColorPickerViewNotificationDidChangeColor = @"KSOCol
 - (void)setColor:(UIColor *)color notify:(BOOL)notify; {
     [self willChangeValueForKey:@kstKeypath(self,color)];
     
-    _color = color;
+    _color = color ?: [KSOColorPickerView _defaultColorForMode:self.mode];
     
     [self didChangeValueForKey:@kstKeypath(self,color)];
     
@@ -134,14 +163,46 @@ NSNotificationName const KSOColorPickerViewNotificationDidChangeColor = @"KSOCol
     _mode = mode;
     
     [self _updateSliderControls];
+}
+- (void)setUserCanSelectMode:(BOOL)userCanSelectMode {
+    if (_userCanSelectMode == userCanSelectMode) {
+        return;
+    }
     
-    self.color = [KSOColorPickerView _defaultColorForMode:_mode];
+    _userCanSelectMode = userCanSelectMode;
+    
+    if (_userCanSelectMode) {
+        if (self.segmentedControl == nil) {
+            self.segmentedControl = [[UISegmentedControl alloc] initWithFrame:CGRectZero];
+            self.segmentedControl.translatesAutoresizingMaskIntoConstraints = NO;
+            [self.segmentedControl removeAllSegments];
+            [self.userSelectableModes enumerateObjectsUsingBlock:^(NSNumber * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+                [self.segmentedControl insertSegmentWithTitle:[KSOColorPickerView _userSelectableTitleForMode:obj.integerValue] atIndex:idx animated:NO];
+            }];
+            self.segmentedControl.selectedSegmentIndex = [self.userSelectableModes indexOfObjectPassingTest:^BOOL(NSNumber * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+                return obj.integerValue == self.mode;
+            }];
+            [self.segmentedControl addTarget:self action:@selector(_segmentedControlAction:) forControlEvents:UIControlEventValueChanged];
+            [self addSubview:self.segmentedControl];
+        }
+        
+        [self setNeedsUpdateConstraints];
+    }
+    else {
+        [self.segmentedControl removeFromSuperview];
+        self.segmentedControl = nil;
+        
+        [self setNeedsUpdateConstraints];
+    }
 }
 - (void)setRGBNumberFormatter:(NSNumberFormatter *)RGBNumberFormatter {
     _RGBNumberFormatter = RGBNumberFormatter ?: KSOColorPickerView.defaultRGBNumberFormatter;
 }
-- (void)setHueNumberFormatter:(NSNumberFormatter *)HueNumberFormatter {
-    _HueNumberFormatter = HueNumberFormatter ?: KSOColorPickerView.defaultHueNumberFormatter;
+- (void)setHueNumberFormatter:(NSNumberFormatter *)hueNumberFormatter {
+    _hueNumberFormatter = hueNumberFormatter ?: KSOColorPickerView.defaultHueNumberFormatter;
+}
+- (void)setPercentNumberFormatter:(NSNumberFormatter *)percentNumberFormatter {
+    _percentNumberFormatter = percentNumberFormatter ?: KSOColorPickerView.defaultPercentNumberFormatter;
 }
 #pragma mark *** Private Methods ***
 - (void)_KSOColorPickerViewInit; {
@@ -149,7 +210,10 @@ NSNotificationName const KSOColorPickerViewNotificationDidChangeColor = @"KSOCol
     _color = [KSOColorPickerView _defaultColorForMode:_mode];
     
     _RGBNumberFormatter = KSOColorPickerView.defaultRGBNumberFormatter;
-    _HueNumberFormatter = KSOColorPickerView.defaultHueNumberFormatter;
+    _hueNumberFormatter = KSOColorPickerView.defaultHueNumberFormatter;
+    _percentNumberFormatter = KSOColorPickerView.defaultPercentNumberFormatter;
+    
+    _userSelectableModes = @[@(KSOColorPickerViewModeW), @(KSOColorPickerViewModeWA), @(KSOColorPickerViewModeRGB), @(KSOColorPickerViewModeRGBA), @(KSOColorPickerViewModeHSB), @(KSOColorPickerViewModeHSBA)];
     
     _shouldUpdateSlidersColor = YES;
     
@@ -173,12 +237,6 @@ NSNotificationName const KSOColorPickerViewNotificationDidChangeColor = @"KSOCol
     [self addSubview:_stackView];
     
     [self _updateSliderControls];
-    
-    [NSLayoutConstraint activateConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-[view]-|" options:0 metrics:nil views:@{@"view": _swatchView}]];
-    [NSLayoutConstraint activateConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-[view(==height)]" options:0 metrics:@{@"height": @32.0} views:@{@"view": _swatchView}]];
-    
-    [NSLayoutConstraint activateConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-[view]-|" options:0 metrics:nil views:@{@"view": _stackView}]];
-    [NSLayoutConstraint activateConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[top]-[view]-|" options:0 metrics:nil views:@{@"view": _stackView, @"top": _swatchView}]];
 }
 #pragma mark -
 - (void)_updateSliderControls; {
@@ -310,6 +368,22 @@ NSNotificationName const KSOColorPickerViewNotificationDidChangeColor = @"KSOCol
     
     return retval;
 }
++ (NSString *)_userSelectableTitleForMode:(KSOColorPickerViewMode)mode; {
+    switch (mode) {
+        case KSOColorPickerViewModeHSBA:
+            return @"HSBA";
+        case KSOColorPickerViewModeRGBA:
+            return @"RGBA";
+        case KSOColorPickerViewModeWA:
+            return @"WA";
+        case KSOColorPickerViewModeW:
+            return @"W";
+        case KSOColorPickerViewModeHSB:
+            return @"HSB";
+        case KSOColorPickerViewModeRGB:
+            return @"RGB";
+    }
+}
 #pragma mark Actions
 - (IBAction)_sliderValueChanged:(KSOColorPickerSlider *)sender {
     switch (self.mode) {
@@ -341,6 +415,9 @@ NSNotificationName const KSOColorPickerViewNotificationDidChangeColor = @"KSOCol
 - (IBAction)_sliderTouchUp:(id)sender {
     self.shouldUpdateSlidersColor = YES;
 }
+- (IBAction)_segmentedControlAction:(id)sender {
+    self.mode = self.userSelectableModes[self.segmentedControl.selectedSegmentIndex].integerValue;
+}
 #pragma mark Properties
 + (NSNumberFormatter *)defaultRGBNumberFormatter {
     NSNumberFormatter *retval = [[NSNumberFormatter alloc] init];
@@ -354,6 +431,14 @@ NSNotificationName const KSOColorPickerViewNotificationDidChangeColor = @"KSOCol
     
     retval.maximumFractionDigits = 2;
     retval.positiveSuffix = @"°";
+    
+    return retval;
+}
++ (NSNumberFormatter *)defaultPercentNumberFormatter {
+    NSNumberFormatter *retval = [[NSNumberFormatter alloc] init];
+    
+    retval.numberStyle = NSNumberFormatterPercentStyle;
+    retval.maximumFractionDigits = 2;
     
     return retval;
 }

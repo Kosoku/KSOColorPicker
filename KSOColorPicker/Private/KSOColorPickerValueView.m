@@ -86,7 +86,12 @@ static CGSize const kTriangleSize = {.width=12.0, .height=8.0};
             self.label.text = [self.colorPickerView.RGBNumberFormatter stringFromNumber:@(self.colorPickerSlider.value * 255.0)];
             break;
         case KSOColorPickerViewComponentTypeHue:
-            self.label.text = [self.colorPickerView.HueNumberFormatter stringFromNumber:@(self.colorPickerSlider.value * 360.0)];
+            self.label.text = [self.colorPickerView.hueNumberFormatter stringFromNumber:@(self.colorPickerSlider.value * 360.0)];
+            break;
+        case KSOColorPickerViewComponentTypeSaturation:
+        case KSOColorPickerViewComponentTypeBrightness:
+        case KSOColorPickerViewComponentTypeAlpha:
+            self.label.text = [self.colorPickerView.percentNumberFormatter stringFromNumber:@(self.colorPickerSlider.value)];
             break;
         default:
             break;

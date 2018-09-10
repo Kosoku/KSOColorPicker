@@ -19,13 +19,8 @@
 #import <Ditko/Ditko.h>
 #import <Stanley/Stanley.h>
 
-@interface ColorPickerViewMode : NSObject <KDIPickerViewButtonRow>
-@property (assign,nonatomic) KSOColorPickerViewMode mode;
-+ (instancetype)colorPickerViewMode:(KSOColorPickerViewMode)mode;
-@end
-
 @interface ViewController ()
-@property (weak,nonatomic) IBOutlet KDIPickerViewButton *modePickerViewButton;
+@property (weak,nonatomic) IBOutlet UISwitch *userCanSelectModeSwitch;
 @property (weak,nonatomic) IBOutlet KSOColorPickerView *colorPickerView;
 @property (weak,nonatomic) IBOutlet KSOColorPickerView *colorPickerViewSecondary;
 
@@ -36,42 +31,13 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    [self.modePickerViewButton KDI_setPickerViewButtonRows:@[[ColorPickerViewMode colorPickerViewMode:KSOColorPickerViewModeW], [ColorPickerViewMode colorPickerViewMode:KSOColorPickerViewModeWA], [ColorPickerViewMode colorPickerViewMode:KSOColorPickerViewModeRGB], [ColorPickerViewMode colorPickerViewMode:KSOColorPickerViewModeRGBA], [ColorPickerViewMode colorPickerViewMode:KSOColorPickerViewModeHSB], [ColorPickerViewMode colorPickerViewMode:KSOColorPickerViewModeHSBA]] titleForSelectedRowBlock:^NSString *(id<KDIPickerViewButtonRow>  _Nonnull row) {
-        return [NSString stringWithFormat:@"Mode: %@",row.pickerViewButtonRowTitle];
-    } didSelectRowBlock:^(ColorPickerViewMode * _Nonnull row) {
-        self.colorPickerView.mode = row.mode;
-        self.colorPickerViewSecondary.mode = row.mode;
-    }];
+    kstWeakify(self);
     
-    [self.modePickerViewButton selectRow:[self.modePickerViewButton.KDI_pickerViewButtonRows indexOfObjectPassingTest:^BOOL(ColorPickerViewMode * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
-        return obj.mode == KSOColorPickerViewModeDefault;
-    }] inComponent:0];
+    [self.userCanSelectModeSwitch KDI_addBlock:^(__kindof UIControl * _Nonnull control, UIControlEvents controlEvents) {
+        kstStrongify(self);
+        self.colorPickerView.userCanSelectMode = self.userCanSelectModeSwitch.isOn;
+        self.colorPickerViewSecondary.userCanSelectMode = self.userCanSelectModeSwitch.isOn;
+    } forControlEvents:UIControlEventValueChanged];
 }
 
-@end
-
-@implementation ColorPickerViewMode
-+ (instancetype)colorPickerViewMode:(KSOColorPickerViewMode)mode; {
-    ColorPickerViewMode *retval = [[ColorPickerViewMode alloc] init];
-    
-    retval.mode = mode;
-    
-    return retval;
-}
-- (NSString *)pickerViewButtonRowTitle {
-    switch (self.mode) {
-        case KSOColorPickerViewModeWA:
-            return @"White, Alpha";
-        case KSOColorPickerViewModeW:
-            return @"White";
-        case KSOColorPickerViewModeHSB:
-            return @"Hue, Saturation, Brightness";
-        case KSOColorPickerViewModeHSBA:
-            return @"Hue, Saturation, Brightness, Alpha";
-        case KSOColorPickerViewModeRGB:
-            return @"Red, Green, Blue";
-        case KSOColorPickerViewModeRGBA:
-            return @"Red, Green, Blue, Alpha";
-    }
-}
 @end
