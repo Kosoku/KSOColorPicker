@@ -22,8 +22,8 @@
 
 @property (readonly,assign,nonatomic) KSOColorPickerViewComponentType componentType;
 
-@property (strong,nonatomic) UIColor *color;
-
 - (instancetype)initWithComponentType:(KSOColorPickerViewComponentType)componentType colorPickerView:(KSOColorPickerView *)colorPickerView;
+
+- (void)updateWithColorPickerViewColor;
 
 @end

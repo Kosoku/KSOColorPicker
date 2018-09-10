@@ -19,7 +19,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" placeholderIntrinsicWidth="343" placeholderIntrinsicHeight="128" translatesAutoresizingMaskIntoConstraints="NO" id="bqs-IM-nWn" customClass="KSOColorPickerView">
-                                <rect key="frame" x="64" y="68" width="247.5" height="128"/>
+                                <rect key="frame" x="47" y="68" width="281.5" height="128"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             </view>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="tP4-Gg-D3u" customClass="KDIPickerViewButton">
@@ -27,7 +27,7 @@
                                 <state key="normal" title="Button"/>
                             </button>
                             <view contentMode="scaleToFill" placeholderIntrinsicWidth="343" placeholderIntrinsicHeight="128" translatesAutoresizingMaskIntoConstraints="NO" id="mpQ-ci-Kl4" customClass="KSOColorPickerView">
-                                <rect key="frame" x="64" y="204" width="247.5" height="128"/>
+                                <rect key="frame" x="47" y="204" width="281.5" height="128"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             </view>
                         </subviews>
@@ -37,7 +37,7 @@
                             <constraint firstItem="mpQ-ci-Kl4" firstAttribute="top" secondItem="bqs-IM-nWn" secondAttribute="bottom" constant="8" id="Caz-Nj-o4W"/>
                             <constraint firstItem="tP4-Gg-D3u" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="10" id="I9U-lK-e5i"/>
                             <constraint firstItem="bqs-IM-nWn" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="R65-ee-jRA"/>
-                            <constraint firstItem="bqs-IM-nWn" firstAttribute="width" secondItem="8bC-Xf-vdC" secondAttribute="width" multiplier="0.66" id="RXy-vx-JfM"/>
+                            <constraint firstItem="bqs-IM-nWn" firstAttribute="width" secondItem="8bC-Xf-vdC" secondAttribute="width" multiplier="0.75" id="RXy-vx-JfM"/>
                             <constraint firstItem="mpQ-ci-Kl4" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="ZTF-GR-5Uc"/>
                             <constraint firstItem="tP4-Gg-D3u" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="aKh-L4-KGG"/>
                             <constraint firstItem="mpQ-ci-Kl4" firstAttribute="width" secondItem="bqs-IM-nWn" secondAttribute="width" id="pvh-k8-VUk"/>

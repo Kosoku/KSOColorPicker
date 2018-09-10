@@ -1,8 +1,8 @@
 //
-//  KSOColorPickerView.h
+//  KSOColorPickerValueView.h
 //  KSOColorPicker-iOS
 //
-//  Created by William Towe on 9/9/18.
+//  Created by William Towe on 9/10/18.
 //  Copyright © 2018 Kosoku Interactive, LLC. All rights reserved.
 //
 //  Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met:
@@ -15,28 +15,10 @@
 
 #import <UIKit/UIKit.h>
 
-NS_ASSUME_NONNULL_BEGIN
+@class KSOColorPickerView, KSOColorPickerSlider;
 
-typedef NS_ENUM(NSInteger, KSOColorPickerViewMode) {
-    KSOColorPickerViewModeW,
-    KSOColorPickerViewModeWA,
-    KSOColorPickerViewModeRGB,
-    KSOColorPickerViewModeRGBA,
-    KSOColorPickerViewModeHSB,
-    KSOColorPickerViewModeHSBA,
-    KSOColorPickerViewModeDefault = KSOColorPickerViewModeRGB
-};
+@interface KSOColorPickerValueView : UIView
 
-FOUNDATION_EXTERN NSNotificationName const KSOColorPickerViewNotificationDidChangeColor;
-
-@interface KSOColorPickerView : UIView
-
-@property (strong,nonatomic,nullable) UIColor *color;
-
-@property (assign,nonatomic) KSOColorPickerViewMode mode;
-
-@property (strong,nonatomic,null_resettable) NSNumberFormatter *RGBNumberFormatter;
+- (instancetype)initWithColorPickerSlider:(KSOColorPickerSlider *)colorPickerSlider colorPickerView:(KSOColorPickerView *)colorPickerView;
 
 @end
-
-NS_ASSUME_NONNULL_END

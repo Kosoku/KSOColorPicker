@@ -30,6 +30,8 @@ NSNotificationName const KSOColorPickerViewNotificationDidChangeColor = @"KSOCol
 
 @property (assign,nonatomic) BOOL shouldUpdateSlidersColor;
 
+@property (class,readonly,nonatomic) NSNumberFormatter *defaultRGBNumberFormatter;
+
 - (void)setColor:(UIColor *)color notify:(BOOL)notify;
 
 - (void)_KSOColorPickerViewInit;
@@ -41,7 +43,7 @@ NSNotificationName const KSOColorPickerViewNotificationDidChangeColor = @"KSOCol
 @end
 
 @implementation KSOColorPickerView
-
+#pragma mark *** Subclass Overrides ***
 - (instancetype)initWithFrame:(CGRect)frame {
     if (!(self = [super initWithFrame:frame]))
         return nil;
@@ -58,7 +60,7 @@ NSNotificationName const KSOColorPickerViewNotificationDidChangeColor = @"KSOCol
     
     return self;
 }
-
+#pragma mark UIDragInteractionDelegate
 - (NSArray<UIDragItem *> *)dragInteraction:(UIDragInteraction *)interaction itemsForBeginningSession:(id<UIDragSession>)session {
     NSItemProvider *provider = [[NSItemProvider alloc] initWithObject:self.color];
     UIDragItem *item = [[UIDragItem alloc] initWithItemProvider:provider];
@@ -70,7 +72,7 @@ NSNotificationName const KSOColorPickerViewNotificationDidChangeColor = @"KSOCol
 - (void)dragInteraction:(UIDragInteraction *)interaction sessionWillBegin:(id<UIDragSession>)session {
     session.localContext = self;
 }
-
+#pragma mark UIDropInteractionDelegate
 - (BOOL)dropInteraction:(UIDropInteraction *)interaction canHandleSession:(id<UIDropSession>)session {
     if (session.localDragSession.localContext == self) {
         return NO;
@@ -98,7 +100,8 @@ NSNotificationName const KSOColorPickerViewNotificationDidChangeColor = @"KSOCol
         self.color = objects.firstObject;
     }];
 }
-
+#pragma mark *** Public Methods ***
+#pragma mark Properties
 - (void)setColor:(UIColor *)color {
     [self setColor:color notify:NO];
 }
@@ -113,7 +116,7 @@ NSNotificationName const KSOColorPickerViewNotificationDidChangeColor = @"KSOCol
     
     if (self.shouldUpdateSlidersColor) {
         for (KSOColorPickerSlider *slider in self.sliders) {
-            slider.color = _color;
+            [slider updateWithColorPickerViewColor];
         }
     }
     
@@ -121,7 +124,7 @@ NSNotificationName const KSOColorPickerViewNotificationDidChangeColor = @"KSOCol
         [NSNotificationCenter.defaultCenter postNotificationName:KSOColorPickerViewNotificationDidChangeColor object:self];
     }
 }
-
+#pragma mark -
 - (void)setMode:(KSOColorPickerViewMode)mode {
     if (_mode == mode) {
         return;
@@ -133,10 +136,15 @@ NSNotificationName const KSOColorPickerViewNotificationDidChangeColor = @"KSOCol
     
     self.color = [KSOColorPickerView _defaultColorForMode:_mode];
 }
-
+- (void)setRGBNumberFormatter:(NSNumberFormatter *)RGBNumberFormatter {
+    _RGBNumberFormatter = RGBNumberFormatter ?: KSOColorPickerView.defaultRGBNumberFormatter;
+}
+#pragma mark *** Private Methods ***
 - (void)_KSOColorPickerViewInit; {
     _mode = KSOColorPickerViewModeDefault;
     _color = [KSOColorPickerView _defaultColorForMode:_mode];
+    
+    _RGBNumberFormatter = KSOColorPickerView.defaultRGBNumberFormatter;
     
     _shouldUpdateSlidersColor = YES;
     
@@ -167,6 +175,7 @@ NSNotificationName const KSOColorPickerViewNotificationDidChangeColor = @"KSOCol
     [NSLayoutConstraint activateConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-[view]-|" options:0 metrics:nil views:@{@"view": _stackView}]];
     [NSLayoutConstraint activateConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[top]-[view]-|" options:0 metrics:nil views:@{@"view": _stackView, @"top": _swatchView}]];
 }
+#pragma mark -
 - (void)_updateSliderControls; {
     NSArray *componentTypes;
     
@@ -225,6 +234,7 @@ NSNotificationName const KSOColorPickerViewNotificationDidChangeColor = @"KSOCol
     
     self.sliders = sliders;
 }
+#pragma mark -
 - (KSOColorPickerSlider *)_createSliderControlForComponentType:(KSOColorPickerViewComponentType)type; {
     KSOColorPickerSlider *retval = [[KSOColorPickerSlider alloc] initWithComponentType:type colorPickerView:self];
     
@@ -272,7 +282,7 @@ NSNotificationName const KSOColorPickerViewNotificationDidChangeColor = @"KSOCol
     
     return retval;
 }
-
+#pragma mark -
 + (UIColor *)_defaultColorForMode:(KSOColorPickerViewMode)mode; {
     UIColor *retval;
     
@@ -295,7 +305,7 @@ NSNotificationName const KSOColorPickerViewNotificationDidChangeColor = @"KSOCol
     
     return retval;
 }
-
+#pragma mark Actions
 - (IBAction)_sliderValueChanged:(KSOColorPickerSlider *)sender {
     switch (self.mode) {
         case KSOColorPickerViewModeRGB:
@@ -325,6 +335,14 @@ NSNotificationName const KSOColorPickerViewNotificationDidChangeColor = @"KSOCol
 }
 - (IBAction)_sliderTouchUp:(id)sender {
     self.shouldUpdateSlidersColor = YES;
+}
+#pragma mark Properties
++ (NSNumberFormatter *)defaultRGBNumberFormatter {
+    NSNumberFormatter *retval = [[NSNumberFormatter alloc] init];
+    
+    retval.maximumFractionDigits = 1;
+    
+    return retval;
 }
 
 @end

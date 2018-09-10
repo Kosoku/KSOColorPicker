@@ -15,11 +15,16 @@
 
 #import "KSOColorPickerSlider.h"
 #import "KSOColorPickerView.h"
+#import "KSOColorPickerValueView.h"
 
 #import <Ditko/Ditko.h>
 #import <Stanley/Stanley.h>
 
+static CGFloat const kValueViewBottomMargin = 4.0;
+
 @interface KSOColorPickerSlider ()
+@property (strong,nonatomic) KSOColorPickerValueView *valueView;
+
 @property (readwrite,assign,nonatomic) KSOColorPickerViewComponentType componentType;
 @property (weak,nonatomic) KSOColorPickerView *colorPickerView;
 
@@ -27,11 +32,11 @@
 @end
 
 @implementation KSOColorPickerSlider
-
+#pragma mark *** Subclass Overrides ***
 - (void)dealloc {
     [NSNotificationCenter.defaultCenter removeObserver:self];
 }
-
+#pragma mark -
 - (void)drawRect:(CGRect)rect {
     CGRect trackRect = [self trackRectForBounds:self.bounds];
     
@@ -81,7 +86,38 @@
         UIRectFill(CGRectMake(i, CGRectGetMinY(trackRect), 1.0, CGRectGetHeight(trackRect)));
     }
 }
-
+#pragma mark -
+- (void)layoutSubviews {
+    [super layoutSubviews];
+    
+    if (self.valueView != nil) {
+        CGSize size = [self.valueView systemLayoutSizeFittingSize:UILayoutFittingCompressedSize];
+        CGRect thumbRect = [self thumbRectForBounds:self.bounds trackRect:[self trackRectForBounds:self.bounds] value:self.value];
+        
+        self.valueView.frame = KSTCGRectCenterInRectHorizontally(CGRectMake(0, CGRectGetMinY(thumbRect) - size.height - kValueViewBottomMargin, size.width, size.height), thumbRect);
+    }
+}
+#pragma mark -
+- (BOOL)beginTrackingWithTouch:(UITouch *)touch withEvent:(UIEvent *)event {
+    BOOL retval = [super beginTrackingWithTouch:touch withEvent:event];
+    
+    if (retval) {
+        if (self.valueView == nil) {
+            self.valueView = [[KSOColorPickerValueView alloc] initWithColorPickerSlider:self colorPickerView:self.colorPickerView];
+            self.valueView.translatesAutoresizingMaskIntoConstraints = NO;
+            [self addSubview:self.valueView];
+        }
+    }
+    
+    return retval;
+}
+- (void)endTrackingWithTouch:(UITouch *)touch withEvent:(UIEvent *)event {
+    [super endTrackingWithTouch:touch withEvent:event];
+    
+    [self.valueView removeFromSuperview];
+    self.valueView = nil;
+}
+#pragma mark *** Public Methods ***
 - (instancetype)initWithComponentType:(KSOColorPickerViewComponentType)componentType colorPickerView:(KSOColorPickerView *)colorPickerView {
     if (!(self = [super initWithFrame:CGRectZero]))
         return nil;
@@ -100,7 +136,11 @@
     
     return self;
 }
-
+#pragma mark -
+- (void)updateWithColorPickerViewColor; {
+    [self _updateValue];
+}
+#pragma mark *** Private Methods ***
 - (void)_updateValue; {
     CGFloat red = 0.0, green = 0.0, blue = 0.0, hue = 0.0, saturation = 0.0, brightness = 0.0, white = 0.0, alpha = 0.0;
     
@@ -150,7 +190,7 @@
             break;
     }
 }
-
+#pragma mark Notifications
 - (void)_colorPickerViewDidChangeColor:(NSNotification *)note {
     switch (self.componentType) {
         case KSOColorPickerViewComponentTypeAlpha:
@@ -161,14 +201,6 @@
         default:
             break;
     }
-}
-
-@dynamic color;
-- (UIColor *)color {
-    return self.colorPickerView.color;
-}
-- (void)setColor:(UIColor *)color {
-    [self _updateValue];
 }
 
 @end
