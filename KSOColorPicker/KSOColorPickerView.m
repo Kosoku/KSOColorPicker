@@ -23,7 +23,7 @@
 
 NSNotificationName const KSOColorPickerViewNotificationDidChangeColor = @"KSOColorPickerViewNotificationDidChangeColor";
 
-@interface KSOColorPickerView ()
+@interface KSOColorPickerView () <UIDragInteractionDelegate, UIDropInteractionDelegate>
 @property (strong,nonatomic) KSOColorPickerSwatchView *swatchView;
 @property (strong,nonatomic) UIStackView *stackView;
 @property (copy,nonatomic) NSArray<KSOColorPickerSlider *> *sliders;
@@ -57,6 +57,46 @@ NSNotificationName const KSOColorPickerViewNotificationDidChangeColor = @"KSOCol
     [self _KSOColorPickerViewInit];
     
     return self;
+}
+
+- (NSArray<UIDragItem *> *)dragInteraction:(UIDragInteraction *)interaction itemsForBeginningSession:(id<UIDragSession>)session {
+    NSItemProvider *provider = [[NSItemProvider alloc] initWithObject:self.color];
+    UIDragItem *item = [[UIDragItem alloc] initWithItemProvider:provider];
+    
+    item.localObject = self.color;
+    
+    return @[item];
+}
+- (void)dragInteraction:(UIDragInteraction *)interaction sessionWillBegin:(id<UIDragSession>)session {
+    session.localContext = self;
+}
+
+- (BOOL)dropInteraction:(UIDropInteraction *)interaction canHandleSession:(id<UIDropSession>)session {
+    if (session.localDragSession.localContext == self) {
+        return NO;
+    }
+    
+    for (UIDragItem *item in session.items) {
+        if ([item isKindOfClass:UIColor.class]) {
+            return YES;
+        }
+    }
+    
+    return [session canLoadObjectsOfClass:UIColor.class];
+}
+- (UIDropProposal *)dropInteraction:(UIDropInteraction *)interaction sessionDidUpdate:(id<UIDropSession>)session {
+    UIDropOperation operation = UIDropOperationCancel;
+    
+    if (CGRectContainsPoint(self.swatchView.frame, [session locationInView:self.swatchView])) {
+        operation = UIDropOperationCopy;
+    }
+    
+    return [[UIDropProposal alloc] initWithDropOperation:operation];
+}
+- (void)dropInteraction:(UIDropInteraction *)interaction performDrop:(id<UIDropSession>)session {
+    [session loadObjectsOfClass:UIColor.class completion:^(NSArray<UIColor *> * _Nonnull objects) {
+        self.color = objects.firstObject;
+    }];
 }
 
 - (void)setColor:(UIColor *)color {
@@ -103,6 +143,13 @@ NSNotificationName const KSOColorPickerViewNotificationDidChangeColor = @"KSOCol
     _swatchView = [[KSOColorPickerSwatchView alloc] initWithFrame:CGRectZero];
     _swatchView.translatesAutoresizingMaskIntoConstraints = NO;
     _swatchView.color = _color;
+    
+    UIDragInteraction *drag = [[UIDragInteraction alloc] initWithDelegate:self];
+    
+    drag.enabled = YES;
+    
+    [_swatchView addInteraction:drag];
+    [_swatchView addInteraction:[[UIDropInteraction alloc] initWithDelegate:self]];
     [self addSubview:_swatchView];
     
     _stackView = [[UIStackView alloc] initWithFrame:CGRectZero];
@@ -114,11 +161,11 @@ NSNotificationName const KSOColorPickerViewNotificationDidChangeColor = @"KSOCol
     
     [self _updateSliderControls];
     
-    [NSLayoutConstraint activateConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[view]|" options:0 metrics:nil views:@{@"view": _swatchView}]];
-    [NSLayoutConstraint activateConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[view(==height)]" options:0 metrics:@{@"height": @32.0} views:@{@"view": _swatchView}]];
+    [NSLayoutConstraint activateConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-[view]-|" options:0 metrics:nil views:@{@"view": _swatchView}]];
+    [NSLayoutConstraint activateConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-[view(==height)]" options:0 metrics:@{@"height": @32.0} views:@{@"view": _swatchView}]];
     
-    [NSLayoutConstraint activateConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[view]|" options:0 metrics:nil views:@{@"view": _stackView}]];
-    [NSLayoutConstraint activateConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[top]-[view]|" options:0 metrics:nil views:@{@"view": _stackView, @"top": _swatchView}]];
+    [NSLayoutConstraint activateConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-[view]-|" options:0 metrics:nil views:@{@"view": _stackView}]];
+    [NSLayoutConstraint activateConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[top]-[view]-|" options:0 metrics:nil views:@{@"view": _stackView, @"top": _swatchView}]];
 }
 - (void)_updateSliderControls; {
     NSArray *componentTypes;
