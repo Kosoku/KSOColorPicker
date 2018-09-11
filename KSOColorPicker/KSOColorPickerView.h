@@ -52,9 +52,13 @@ typedef NS_ENUM(NSInteger, KSOColorPickerViewMode) {
 };
 
 /**
- Notification that is posted when the a KSOColorPickerView color property changes. The object of the notification is the KSOColorPickerView instance whose color property changed.
+ Notification that is posted when the KSOColorPickerView color property changes. The object of the notification is the KSOColorPickerView instance whose color property changed.
  */
 FOUNDATION_EXTERN NSNotificationName const KSOColorPickerViewNotificationDidChangeColor;
+/**
+ Notification that is posted when the KSOColorPickerView mode property changes. The object of the notification is the KSOColorPickerView instance whose mode property changed.
+ */
+FOUNDATION_EXTERN NSNotificationName const KSOColorPickerViewNotificationDidChangeMode;
 
 /**
  KSOColorPickerView manages a number of subviews to facilitate picking colors by the user. It (optionally) displays the possible modes top aligned if the userCanSelectMode property is YES, followed by a swatch view that displays the selected color, and finally by a number of UISlider controls that allow the user to select the necessary color components.

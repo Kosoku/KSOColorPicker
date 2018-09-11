@@ -23,6 +23,7 @@
 #import <Ditko/Ditko.h>
 
 NSNotificationName const KSOColorPickerViewNotificationDidChangeColor = @"KSOColorPickerViewNotificationDidChangeColor";
+NSNotificationName const KSOColorPickerViewNotificationDidChangeMode = @"KSOColorPickerViewNotificationDidChangeMode";
 
 @interface KSOColorPickerView () <UIDragInteractionDelegate, UIDropInteractionDelegate>
 @property (strong,nonatomic) KSOColorPickerSwatchView *swatchView;
@@ -176,6 +177,8 @@ NSNotificationName const KSOColorPickerViewNotificationDidChangeColor = @"KSOCol
     _mode = mode;
     
     [self _updateSliderControls];
+    
+    [NSNotificationCenter.defaultCenter postNotificationName:KSOColorPickerViewNotificationDidChangeMode object:self];
 }
 - (void)setUserCanSelectMode:(BOOL)userCanSelectMode {
     if (_userCanSelectMode == userCanSelectMode) {
@@ -196,6 +199,7 @@ NSNotificationName const KSOColorPickerViewNotificationDidChangeColor = @"KSOCol
                 return obj.integerValue == self.mode;
             }];
             [self.segmentedControl addTarget:self action:@selector(_segmentedControlAction:) forControlEvents:UIControlEventValueChanged];
+            [self.segmentedControl setContentCompressionResistancePriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisVertical];
             [self addSubview:self.segmentedControl];
         }
         

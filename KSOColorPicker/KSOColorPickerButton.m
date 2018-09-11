@@ -18,6 +18,7 @@
 
 #import <Stanley/Stanley.h>
 #import <Ditko/Ditko.h>
+#import <KSOFontAwesomeExtensions/KSOFontAwesomeExtensions.h>
 
 static void *kObservingContext = &kObservingContext;
 
@@ -129,44 +130,43 @@ static void *kObservingContext = &kObservingContext;
     
     [self _reloadTitleAndImageFromColorPickerViewColor];
     
-    self.inputView = self.colorPickerView;
+    UIInputView *inputView = [[UIInputView alloc] initWithFrame:CGRectZero inputViewStyle:UIInputViewStyleKeyboard];
+    
+    inputView.translatesAutoresizingMaskIntoConstraints = NO;
+    inputView.allowsSelfSizing = YES;
+    
+    [inputView addSubview:self.colorPickerView];
+    
+    [NSLayoutConstraint activateConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[view]|" options:0 metrics:nil views:@{@"view": self.colorPickerView}]];
+    [NSLayoutConstraint activateConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[view]|" options:0 metrics:nil views:@{@"view": self.colorPickerView}]];
+    
+    self.inputView = inputView;
 }
 - (void)_reloadTitleAndImageFromColorPickerViewColor; {
     CGFloat height = ceil(self.titleLabel.font.lineHeight);
     CGSize size = CGSizeMake(height, height);
-    CGRect rect = CGRectMake(0, 0, size.width, size.height);
-    UIGraphicsBeginImageContextWithOptions(size, NO, 0.0);
+    UIImage *image = nil;
     
     if (self.color == nil) {
-        UIBezierPath *path = [UIBezierPath bezierPathWithRect:rect];
-        
-        [UIColor.whiteColor setFill];
-        [path fill];
-        
-        path = [UIBezierPath bezierPath];
-        
-        [path moveToPoint:CGPointMake(CGRectGetMinX(rect), CGRectGetMinY(rect))];
-        [path addLineToPoint:CGPointMake(CGRectGetMaxX(rect), CGRectGetMaxY(rect))];
-        
-        [UIColor.redColor setStroke];
-        [path stroke];
-        
-        [UIColor.blackColor setStroke];
-        [[UIBezierPath bezierPathWithRect:rect] KDI_strokeInside];
+        // the cancel image
+        image = [UIImage KSO_fontAwesomeSolidImageWithString:@"\uf05e" size:size].KDI_templateImage;
     }
     else {
-        UIBezierPath *path = [UIBezierPath bezierPathWithRect:rect];
+        CGRect rect = CGRectMake(0, 0, size.width, size.height);
+        UIGraphicsBeginImageContextWithOptions(size, NO, 0.0);
+        
+        UIBezierPath *path = [UIBezierPath bezierPathWithOvalInRect:rect];
         
         [self.color setFill];
         [path fill];
         
-        [self.color.KDI_contrastingColor setStroke];
+        [self.color.KDI_contrastingColor.KDI_inverseColor setStroke];
         [path KDI_strokeInside];
+        
+        image = UIGraphicsGetImageFromCurrentImageContext().KDI_originalImage;
+        
+        UIGraphicsEndImageContext();
     }
-    
-    UIImage *image = UIGraphicsGetImageFromCurrentImageContext().KDI_originalImage;
-    
-    UIGraphicsEndImageContext();
     
     [self setImage:image forState:UIControlStateNormal];
 }
