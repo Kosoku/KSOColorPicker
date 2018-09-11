@@ -36,7 +36,7 @@ static void *kObservingContext = &kObservingContext;
 @end
 
 @implementation KSOColorPickerButton
-
+#pragma mark *** Subclass Overrides ***
 - (void)dealloc {
     [NSNotificationCenter.defaultCenter removeObserver:self];
 }
@@ -57,7 +57,7 @@ static void *kObservingContext = &kObservingContext;
     
     return self;
 }
-
+#pragma mark -
 - (BOOL)canBecomeFirstResponder {
     return YES;
 }
@@ -85,7 +85,7 @@ static void *kObservingContext = &kObservingContext;
     
     [self firstResponderDidChange];
     
-    [NSNotificationCenter.defaultCenter postNotificationName:KDIUIResponderNotificationDidBecomeFirstResponder object:self];
+    [NSNotificationCenter.defaultCenter postNotificationName:KDIUIResponderNotificationDidResignFirstResponder object:self];
     
     UIAccessibilityPostNotification(UIAccessibilityLayoutChangedNotification, nil);
     
@@ -95,7 +95,8 @@ static void *kObservingContext = &kObservingContext;
 - (void)firstResponderDidChange {
     
 }
-
+#pragma mark *** Public Methods ***
+#pragma mark Properties
 - (void)setColor:(UIColor *)color {
     _color = color;
     
@@ -118,7 +119,7 @@ static void *kObservingContext = &kObservingContext;
     
     [self _reloadTitleFromColorPickerViewColor];
 }
-
+#pragma mark *** Private Methods ***
 - (void)_KSOColorPickerButtonInit; {
     kstWeakify(self);
     
@@ -149,6 +150,7 @@ static void *kObservingContext = &kObservingContext;
     
     [NSNotificationCenter.defaultCenter addObserver:self selector:@selector(_colorPickerViewDidEndTrackingComponent:) name:KSOColorPickerViewNotificationDidEndTrackingComponent object:nil];
 }
+#pragma mark -
 - (void)_reloadColorPickerView; {
     self.colorPickerView.translatesAutoresizingMaskIntoConstraints = NO;
     
@@ -213,7 +215,7 @@ static void *kObservingContext = &kObservingContext;
     
     [self setImage:image forState:UIControlStateNormal];
 }
-
+#pragma mark Notifications
 - (void)_colorPickerViewDidEndTrackingComponent:(NSNotification *)note {
     if (![note.object isEqual:self.colorPickerView]) {
         return;
@@ -229,7 +231,7 @@ static void *kObservingContext = &kObservingContext;
     
     [self _reloadTitleAndImageFromColorPickerViewColor];
 }
-
+#pragma mark Properties
 + (KSOColorPickerView *)defaultColorPickerView {
     KSOColorPickerView *retval = [[KSOColorPickerView alloc] initWithFrame:CGRectZero];
     
