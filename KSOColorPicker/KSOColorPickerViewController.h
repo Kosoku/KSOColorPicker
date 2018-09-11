@@ -20,12 +20,33 @@ NS_ASSUME_NONNULL_BEGIN
 @class KSOColorPickerView;
 @protocol KSOColorPickerViewControllerDelegate;
 
+/**
+ KSOColorPickerViewController is a UIViewController subclass that hosts a KSOColorPickerView and can be presented modally or pushed onto an existing navigation stack. It will display a Done bar button item so the user can confirm the color they have chosen as well as a Cancel bar button item to cancel selection when presented modally. The default title is @"Choose Color" and localized.
+ */
 @interface KSOColorPickerViewController : UIViewController
 
+/**
+ Set and get the delegate of the receiver.
+ 
+ The default is nil.
+ 
+ @see KSOColorPickerViewControllerDelegate
+ */
 @property (weak,nonatomic,nullable) id<KSOColorPickerViewControllerDelegate> delegate;
 
+/**
+ Set and get the subtitle of the receiver, which is displayed below the title in the navigation bar.
+ 
+ The default is @"Adjust components using the sliders" and localized.
+ */
 @property (copy,nonatomic,nullable) NSString *subtitle;
 
+/**
+ Create and return an instance that will host the provided *colorPickerView*. Passing nil uses a default instance of KSOColorPickerView.
+ 
+ @param colorPickerView The color picker view to host, or nil to use a default instance
+ @return The initialized instance
+ */
 - (instancetype)initWithColorPickerView:(nullable KSOColorPickerView *)colorPickerView NS_DESIGNATED_INITIALIZER;
 
 - (instancetype)initWithNibName:(nullable NSString *)nibNameOrNil bundle:(nullable NSBundle *)nibBundleOrNil NS_UNAVAILABLE;
@@ -35,8 +56,24 @@ NS_ASSUME_NONNULL_BEGIN
 
 @protocol KSOColorPickerViewControllerDelegate <NSObject>
 @optional
+/**
+ Called when the user taps the Done bar button item to select a color.
+ 
+ @param viewController The sender of the message
+ @param color The color that was selected by the user
+ */
 - (void)colorPickerViewController:(KSOColorPickerViewController *)viewController didFinishPickingColor:(UIColor *)color;
+/**
+ Called when the user taps the Cancel bar button item.
+ 
+ @param viewController The sender of the message
+ */
 - (void)colorPickerViewControllerDidCancel:(KSOColorPickerViewController *)viewController;
+/**
+ Called the view controller has finished the dismissal or pop animation.
+ 
+ @param viewController The sender of the message
+ */
 - (void)colorPickerViewControllerDidDismiss:(KSOColorPickerViewController *)viewController;
 @end
 

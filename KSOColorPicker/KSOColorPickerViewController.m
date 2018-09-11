@@ -24,6 +24,8 @@
 @property (strong,nonatomic) KDINavigationBarTitleView *titleView;
 @property (strong,nonatomic) KSOColorPickerView *colorPickerView;
 
+@property (assign,nonatomic) BOOL dismissalTriggeredBySelf;
+
 @property (class,readonly,nonatomic) NSString *defaultTitle;
 @property (class,readonly,nonatomic) NSString *defaultSubtitle;
 @end
@@ -50,6 +52,9 @@
     if (self.presentingViewController != nil) {
         UIBarButtonItem *cancelItem = [UIBarButtonItem KDI_barButtonSystemItem:UIBarButtonSystemItemCancel block:^(__kindof UIBarButtonItem * _Nonnull barButtonItem) {
             kstStrongify(self);
+            
+            self.dismissalTriggeredBySelf = YES;
+            
             if ([self.delegate respondsToSelector:@selector(colorPickerViewControllerDidCancel:)]) {
                 [self.delegate colorPickerViewControllerDidCancel:self];
             }
@@ -72,6 +77,8 @@
             }
         };
         
+        self.dismissalTriggeredBySelf = YES;
+        
         if ([self.delegate respondsToSelector:@selector(colorPickerViewController:didFinishPickingColor:)]) {
             [self.delegate colorPickerViewController:self didFinishPickingColor:self.colorPickerView.color];
         }
@@ -86,14 +93,32 @@
     
     self.navigationItem.rightBarButtonItems = @[doneItem];
 }
+- (void)viewWillDisappear:(BOOL)animated {
+    [super viewWillDisappear:animated];
+    
+    if (!self.dismissalTriggeredBySelf) {
+        if ([self.delegate respondsToSelector:@selector(colorPickerViewControllerDidCancel:)]) {
+            [self.delegate colorPickerViewControllerDidCancel:self];
+        }
+    }
+}
+- (void)viewDidDisappear:(BOOL)animated {
+    [super viewDidDisappear:animated];
+    
+    if (!self.dismissalTriggeredBySelf) {
+        if ([self.delegate respondsToSelector:@selector(colorPickerViewControllerDidDismiss:)]) {
+            [self.delegate colorPickerViewControllerDidDismiss:self];
+        }
+    }
+}
 
 - (void)setTitle:(NSString *)title {
-    [super setTitle:title ?: KSOColorPickerViewController.defaultTitle];
+    [super setTitle:title];
     
     self.titleView.title = self.title;
 }
 - (void)setSubtitle:(NSString *)subtitle {
-    _subtitle = subtitle ?: KSOColorPickerViewController.defaultSubtitle;
+    _subtitle = subtitle;
     
     self.titleView.subtitle = _subtitle;
 }
