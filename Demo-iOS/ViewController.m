@@ -35,6 +35,9 @@
     
     self.navigationItem.rightBarButtonItems = @[[UIBarButtonItem KDI_barButtonItemWithTitle:@"Present" style:UIBarButtonItemStylePlain block:^(__kindof UIBarButtonItem * _Nonnull barButtonItem) {
         kstStrongify(self);
+        
+        [self.view endEditing:YES];
+        
         // using the convenience category method
         [self KSO_presentColorPickerViewController:[[KSOColorPickerViewController alloc] initWithColorPickerView:nil] animated:YES completion:^(UIColor * _Nullable color) {
             if (color != nil) {
@@ -43,6 +46,9 @@
         }];
     }], [UIBarButtonItem KDI_barButtonItemWithTitle:@"Push" style:UIBarButtonItemStylePlain block:^(__kindof UIBarButtonItem * _Nonnull barButtonItem) {
         kstStrongify(self);
+        
+        [self.view endEditing:YES];
+        
         // using normal delegation pattern
         KSOColorPickerViewController *viewController = [[KSOColorPickerViewController alloc] initWithColorPickerView:nil];
         

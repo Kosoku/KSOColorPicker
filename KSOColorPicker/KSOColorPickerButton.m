@@ -147,28 +147,42 @@ static void *kObservingContext = &kObservingContext;
     CGSize size = CGSizeMake(height, height);
     UIImage *image = nil;
     
-    if (self.color == nil) {
-        // the cancel image
-        image = [UIImage KSO_fontAwesomeSolidImageWithString:@"\uf05e" size:size].KDI_templateImage;
+    if (self.imageForColorBlock != nil) {
+        image = self.imageForColorBlock(self, self.color, size);
     }
-    else {
-        CGRect rect = CGRectMake(0, 0, size.width, size.height);
-        UIGraphicsBeginImageContextWithOptions(size, NO, 0.0);
-        
-        UIBezierPath *path = [UIBezierPath bezierPathWithOvalInRect:rect];
-        
-        [self.color setFill];
-        [path fill];
-        
-        [self.color.KDI_contrastingColor.KDI_inverseColor setStroke];
-        [path KDI_strokeInside];
-        
-        image = UIGraphicsGetImageFromCurrentImageContext().KDI_originalImage;
-        
-        UIGraphicsEndImageContext();
+    
+    if (image == nil) {
+        if (self.color == nil) {
+            // the cancel image
+            image = [UIImage KSO_fontAwesomeSolidImageWithString:@"\uf05e" size:size].KDI_templateImage;
+        }
+        else {
+            CGRect rect = CGRectMake(0, 0, size.width, size.height);
+            UIGraphicsBeginImageContextWithOptions(size, NO, 0.0);
+            
+            UIBezierPath *path = [UIBezierPath bezierPathWithRoundedRect:rect cornerRadius:5.0];
+            
+            [self.color setFill];
+            [path fill];
+            
+            [UIColor.blackColor setStroke];
+            [path KDI_strokeInside];
+            
+            image = UIGraphicsGetImageFromCurrentImageContext().KDI_originalImage;
+            
+            UIGraphicsEndImageContext();
+        }
     }
     
     [self setImage:image forState:UIControlStateNormal];
+    
+    if (self.titleForColorBlock != nil) {
+        NSString *title = self.titleForColorBlock(self, self.color);
+        
+        if (!KSTIsEmptyObject(title)) {
+            [self setTitle:title forState:UIControlStateNormal];
+        }
+    }
 }
 
 - (void)_colorPickerViewDidChangeColor:(NSNotification *)note {

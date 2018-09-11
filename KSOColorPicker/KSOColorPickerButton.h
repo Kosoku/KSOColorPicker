@@ -17,6 +17,11 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+@class KSOColorPickerButton;
+
+typedef UIImage* _Nullable (^KSOColorPickerButtonImageForColorBlock)(__kindof KSOColorPickerButton *colorPickerButton, UIColor * _Nullable color, CGSize defaultImageSize);
+typedef NSString* _Nullable (^KSOColorPickerButtonTitleForColorBlock)(__kindof KSOColorPickerButton *colorPickerButton, UIColor * _Nullable color);
+
 @class KSOColorPickerView;
 
 @interface KSOColorPickerButton : KDIButton
@@ -24,6 +29,9 @@ NS_ASSUME_NONNULL_BEGIN
 @property (strong,nonatomic,nullable) UIColor *color;
 
 @property (strong,nonatomic,null_resettable) KSOColorPickerView *colorPickerView;
+
+@property (copy,nonatomic,nullable) KSOColorPickerButtonImageForColorBlock imageForColorBlock;
+@property (copy,nonatomic,nullable) KSOColorPickerButtonTitleForColorBlock titleForColorBlock;
 
 @end
 
