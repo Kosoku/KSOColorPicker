@@ -68,6 +68,10 @@ static void *kObservingContext = &kObservingContext;
     
     [self didChangeValueForKey:@kstKeypath(self,isFirstResponder)];
     
+    [self firstResponderDidChange];
+    
+    [NSNotificationCenter.defaultCenter postNotificationName:KDIUIResponderNotificationDidBecomeFirstResponder object:self];
+    
     UIAccessibilityPostNotification(UIAccessibilityLayoutChangedNotification, self.inputView);
     
     return retval;
@@ -79,9 +83,17 @@ static void *kObservingContext = &kObservingContext;
     
     [self didChangeValueForKey:@kstKeypath(self,isFirstResponder)];
     
+    [self firstResponderDidChange];
+    
+    [NSNotificationCenter.defaultCenter postNotificationName:KDIUIResponderNotificationDidBecomeFirstResponder object:self];
+    
     UIAccessibilityPostNotification(UIAccessibilityLayoutChangedNotification, nil);
     
     return retval;
+}
+
+- (void)firstResponderDidChange {
+    
 }
 
 - (void)setColor:(UIColor *)color {
