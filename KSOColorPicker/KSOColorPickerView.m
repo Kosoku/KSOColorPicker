@@ -86,7 +86,7 @@ NSNotificationName const KSOColorPickerViewNotificationDidChangeColor = @"KSOCol
     
     if (self.segmentedControl != nil) {
         [temp addObjectsFromArray:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-[view]-|" options:0 metrics:nil views:@{@"view": self.segmentedControl}]];
-        [temp addObjectsFromArray:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-[view]" options:0 metrics:nil views:@{@"view": self.segmentedControl, @"top": self.swatchView}]];
+        [temp addObject:[self.segmentedControl.topAnchor constraintEqualToSystemSpacingBelowAnchor:self.safeAreaLayoutGuide.topAnchor multiplier:1.0]];
     }
     
     [temp addObjectsFromArray:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-[view]-|" options:0 metrics:nil views:@{@"view": self.swatchView}]];
@@ -94,14 +94,16 @@ NSNotificationName const KSOColorPickerViewNotificationDidChangeColor = @"KSOCol
     CGFloat swatchViewHeight = 32.0;
     
     if (self.segmentedControl == nil) {
-        [temp addObjectsFromArray:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-[view(==height)]" options:0 metrics:@{@"height": @(swatchViewHeight)} views:@{@"view": self.swatchView}]];
+        [temp addObjectsFromArray:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[view(==height)]" options:0 metrics:@{@"height": @(swatchViewHeight)} views:@{@"view": self.swatchView}]];
+        [temp addObject:[self.swatchView.topAnchor constraintGreaterThanOrEqualToSystemSpacingBelowAnchor:self.safeAreaLayoutGuide.topAnchor multiplier:1.0]];
     }
     else {
         [temp addObjectsFromArray:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[top]-[view(==height)]" options:0 metrics:@{@"height": @(swatchViewHeight)} views:@{@"view": self.swatchView, @"top": self.segmentedControl}]];
     }
     
     [temp addObjectsFromArray:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-[view]-|" options:0 metrics:nil views:@{@"view": self.stackView}]];
-    [temp addObjectsFromArray:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[top]-[view]-|" options:0 metrics:nil views:@{@"view": self.stackView, @"top": self.swatchView}]];
+    [temp addObjectsFromArray:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[top]-[view]" options:0 metrics:nil views:@{@"view": self.stackView, @"top": self.swatchView}]];
+    [temp addObject:[self.safeAreaLayoutGuide.bottomAnchor constraintGreaterThanOrEqualToSystemSpacingBelowAnchor:self.stackView.bottomAnchor multiplier:1.0]];
     
     self.KDI_customConstraints = temp;
     
@@ -286,6 +288,7 @@ NSNotificationName const KSOColorPickerViewNotificationDidChangeColor = @"KSOCol
     _stackView.translatesAutoresizingMaskIntoConstraints = NO;
     _stackView.axis = UILayoutConstraintAxisVertical;
     _stackView.alignment = UIStackViewAlignmentLeading;
+    _stackView.distribution = UIStackViewDistributionEqualSpacing;
     _stackView.spacing = 8.0;
     [self addSubview:_stackView];
     

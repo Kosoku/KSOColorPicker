@@ -5,9 +5,7 @@
     </device>
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
-        <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
-        <capability name="Stack View standard spacing" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -35,48 +33,23 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <view contentMode="scaleToFill" placeholderIntrinsicWidth="343" placeholderIntrinsicHeight="128" translatesAutoresizingMaskIntoConstraints="NO" id="bqs-IM-nWn" customClass="KSOColorPickerView">
-                                <rect key="frame" x="46" y="113" width="281.5" height="128"/>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                            </view>
-                            <view contentMode="scaleToFill" placeholderIntrinsicWidth="343" placeholderIntrinsicHeight="128" translatesAutoresizingMaskIntoConstraints="NO" id="mpQ-ci-Kl4" customClass="KSOColorPickerView">
-                                <rect key="frame" x="46" y="249" width="281.5" height="128"/>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                            </view>
-                            <stackView opaque="NO" contentMode="scaleToFill" spacingType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="RlP-kR-CpQ">
-                                <rect key="frame" x="73.5" y="74" width="228.5" height="31"/>
-                                <subviews>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="User Can Select Mode" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="LR3-z0-BAl">
-                                        <rect key="frame" x="0.0" y="0.0" width="171.5" height="31"/>
-                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                        <nil key="textColor"/>
-                                        <nil key="highlightedColor"/>
-                                    </label>
-                                    <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="MAX-VL-H8D">
-                                        <rect key="frame" x="179.5" y="0.0" width="51" height="31"/>
-                                    </switch>
-                                </subviews>
-                            </stackView>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="v5Z-tw-Tah" customClass="KSOColorPickerButton">
+                                <rect key="frame" x="121" y="72" width="133" height="30"/>
+                                <inset key="titleEdgeInsets" minX="8" minY="0.0" maxX="0.0" maxY="0.0"/>
+                                <state key="normal" title="Color Picker Button"/>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
-                            <constraint firstItem="bqs-IM-nWn" firstAttribute="top" secondItem="RlP-kR-CpQ" secondAttribute="bottom" constant="8" id="15r-7U-oIh"/>
-                            <constraint firstItem="mpQ-ci-Kl4" firstAttribute="top" secondItem="bqs-IM-nWn" secondAttribute="bottom" constant="8" id="Caz-Nj-o4W"/>
-                            <constraint firstItem="RlP-kR-CpQ" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="LxD-eF-H9a"/>
-                            <constraint firstItem="bqs-IM-nWn" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="R65-ee-jRA"/>
-                            <constraint firstItem="bqs-IM-nWn" firstAttribute="width" secondItem="8bC-Xf-vdC" secondAttribute="width" multiplier="0.75" id="RXy-vx-JfM"/>
-                            <constraint firstItem="mpQ-ci-Kl4" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="ZTF-GR-5Uc"/>
-                            <constraint firstItem="RlP-kR-CpQ" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="10" id="bgm-Fm-Y0Q"/>
-                            <constraint firstItem="mpQ-ci-Kl4" firstAttribute="top" secondItem="bqs-IM-nWn" secondAttribute="bottom" constant="8" id="ecm-tS-6u7"/>
-                            <constraint firstItem="mpQ-ci-Kl4" firstAttribute="width" secondItem="bqs-IM-nWn" secondAttribute="width" id="pvh-k8-VUk"/>
+                            <constraint firstItem="v5Z-tw-Tah" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="8" id="Fel-lh-xpf"/>
+                            <constraint firstItem="v5Z-tw-Tah" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="REZ-Rx-lOX"/>
+                            <constraint firstItem="v5Z-tw-Tah" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="RrB-d0-id8"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>
                     <navigationItem key="navigationItem" id="ijh-xP-F6W"/>
                     <connections>
-                        <outlet property="colorPickerView" destination="bqs-IM-nWn" id="PxD-rk-enD"/>
-                        <outlet property="colorPickerViewSecondary" destination="mpQ-ci-Kl4" id="sOT-rZ-Wae"/>
-                        <outlet property="userCanSelectModeSwitch" destination="MAX-VL-H8D" id="Mgk-xc-KkW"/>
+                        <outlet property="colorPickerButton" destination="v5Z-tw-Tah" id="xqg-Op-fVO"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>

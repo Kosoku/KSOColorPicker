@@ -20,9 +20,7 @@
 #import <Stanley/Stanley.h>
 
 @interface ViewController () <KSOColorPickerViewControllerDelegate>
-@property (weak,nonatomic) IBOutlet UISwitch *userCanSelectModeSwitch;
-@property (weak,nonatomic) IBOutlet KSOColorPickerView *colorPickerView;
-@property (weak,nonatomic) IBOutlet KSOColorPickerView *colorPickerViewSecondary;
+@property (weak,nonatomic) IBOutlet KSOColorPickerButton *colorPickerButton;
 
 @end
 
@@ -35,19 +33,12 @@
     
     self.title = @"KSOColorPicker";
     
-    [self.userCanSelectModeSwitch KDI_addBlock:^(__kindof UIControl * _Nonnull control, UIControlEvents controlEvents) {
-        kstStrongify(self);
-        self.colorPickerView.userCanSelectMode = self.userCanSelectModeSwitch.isOn;
-        self.colorPickerViewSecondary.userCanSelectMode = self.userCanSelectModeSwitch.isOn;
-    } forControlEvents:UIControlEventValueChanged];
-    
     self.navigationItem.rightBarButtonItems = @[[UIBarButtonItem KDI_barButtonItemWithTitle:@"Present" style:UIBarButtonItemStylePlain block:^(__kindof UIBarButtonItem * _Nonnull barButtonItem) {
         kstStrongify(self);
         // using the convenience category method
         [self KSO_presentColorPickerViewController:[[KSOColorPickerViewController alloc] initWithColorPickerView:nil] animated:YES completion:^(UIColor * _Nullable color) {
             if (color != nil) {
-                self.colorPickerView.color = color;
-                self.colorPickerViewSecondary.color = color;
+                self.colorPickerButton.color = color;
             }
         }];
     }], [UIBarButtonItem KDI_barButtonItemWithTitle:@"Push" style:UIBarButtonItemStylePlain block:^(__kindof UIBarButtonItem * _Nonnull barButtonItem) {
@@ -64,8 +55,7 @@
 }
 
 - (void)colorPickerViewController:(KSOColorPickerViewController *)viewController didFinishPickingColor:(UIColor *)color {
-    self.colorPickerView.color = color;
-    self.colorPickerViewSecondary.color = color;
+    self.colorPickerButton.color = color;
 }
 - (void)colorPickerViewControllerDidCancel:(KSOColorPickerViewController *)viewController {
     KSTLogObject(viewController);
