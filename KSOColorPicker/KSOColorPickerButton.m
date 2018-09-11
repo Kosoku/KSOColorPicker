@@ -31,6 +31,8 @@ static void *kObservingContext = &kObservingContext;
 - (void)_KSOColorPickerButtonInit;
 - (void)_reloadColorPickerView;
 - (void)_reloadTitleAndImageFromColorPickerViewColor;
+- (void)_reloadTitleFromColorPickerViewColor;
+- (void)_reloadImageFromColorPickerViewColor;
 @end
 
 @implementation KSOColorPickerButton
@@ -94,6 +96,16 @@ static void *kObservingContext = &kObservingContext;
     
     [self _reloadColorPickerView];
 }
+- (void)setImageForColorBlock:(KSOColorPickerButtonImageForColorBlock)imageForColorBlock {
+    _imageForColorBlock = [imageForColorBlock copy];
+    
+    [self _reloadImageFromColorPickerViewColor];
+}
+- (void)setTitleForColorBlock:(KSOColorPickerButtonTitleForColorBlock)titleForColorBlock {
+    _titleForColorBlock = [titleForColorBlock copy];
+    
+    [self _reloadTitleFromColorPickerViewColor];
+}
 
 - (void)_KSOColorPickerButtonInit; {
     kstWeakify(self);
@@ -123,7 +135,7 @@ static void *kObservingContext = &kObservingContext;
         }
     } forControlEvents:UIControlEventTouchUpInside];
     
-    [NSNotificationCenter.defaultCenter addObserver:self selector:@selector(_colorPickerViewDidChangeColor:) name:KSOColorPickerViewNotificationDidChangeColor object:nil];
+    [NSNotificationCenter.defaultCenter addObserver:self selector:@selector(_colorPickerViewDidEndTrackingComponent:) name:KSOColorPickerViewNotificationDidEndTrackingComponent object:nil];
 }
 - (void)_reloadColorPickerView; {
     self.colorPickerView.translatesAutoresizingMaskIntoConstraints = NO;
@@ -143,6 +155,19 @@ static void *kObservingContext = &kObservingContext;
     self.inputView = inputView;
 }
 - (void)_reloadTitleAndImageFromColorPickerViewColor; {
+    [self _reloadImageFromColorPickerViewColor];
+    [self _reloadTitleFromColorPickerViewColor];
+}
+- (void)_reloadTitleFromColorPickerViewColor; {
+    if (self.titleForColorBlock != nil) {
+        NSString *title = self.titleForColorBlock(self, self.color);
+        
+        if (!KSTIsEmptyObject(title)) {
+            [self setTitle:title forState:UIControlStateNormal];
+        }
+    }
+}
+- (void)_reloadImageFromColorPickerViewColor; {
     CGFloat height = ceil(self.titleLabel.font.lineHeight);
     CGSize size = CGSizeMake(height, height);
     UIImage *image = nil;
@@ -175,17 +200,9 @@ static void *kObservingContext = &kObservingContext;
     }
     
     [self setImage:image forState:UIControlStateNormal];
-    
-    if (self.titleForColorBlock != nil) {
-        NSString *title = self.titleForColorBlock(self, self.color);
-        
-        if (!KSTIsEmptyObject(title)) {
-            [self setTitle:title forState:UIControlStateNormal];
-        }
-    }
 }
 
-- (void)_colorPickerViewDidChangeColor:(NSNotification *)note {
+- (void)_colorPickerViewDidEndTrackingComponent:(NSNotification *)note {
     if (![note.object isEqual:self.colorPickerView]) {
         return;
     }

@@ -104,6 +104,8 @@ static NSTimeInterval const kValueViewHideAnimationDuration = 0.33;
     BOOL retval = [super beginTrackingWithTouch:touch withEvent:event];
     
     if (retval) {
+        [NSNotificationCenter.defaultCenter postNotificationName:KSOColorPickerViewNotificationDidBeginTrackingComponent object:self.colorPickerView];
+        
         if (self.valueView == nil) {
             self.valueView = [[KSOColorPickerValueView alloc] initWithColorPickerSlider:self colorPickerView:self.colorPickerView];
             self.valueView.translatesAutoresizingMaskIntoConstraints = NO;
@@ -124,6 +126,8 @@ static NSTimeInterval const kValueViewHideAnimationDuration = 0.33;
 }
 - (void)endTrackingWithTouch:(UITouch *)touch withEvent:(UIEvent *)event {
     [super endTrackingWithTouch:touch withEvent:event];
+    
+    [NSNotificationCenter.defaultCenter postNotificationName:KSOColorPickerViewNotificationDidEndTrackingComponent object:self.colorPickerView];
     
     [UIView animateWithDuration:kValueViewHideAnimationDuration delay:0.0 options:UIViewAnimationOptionBeginFromCurrentState animations:^{
         self.valueView.alpha = 0.0;

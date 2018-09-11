@@ -24,6 +24,8 @@
 
 NSNotificationName const KSOColorPickerViewNotificationDidChangeColor = @"KSOColorPickerViewNotificationDidChangeColor";
 NSNotificationName const KSOColorPickerViewNotificationDidChangeMode = @"KSOColorPickerViewNotificationDidChangeMode";
+NSNotificationName const KSOColorPickerViewNotificationDidBeginTrackingComponent = @"KSOColorPickerViewNotificationDidBeginTrackingComponent";
+NSNotificationName const KSOColorPickerViewNotificationDidEndTrackingComponent = @"KSOColorPickerViewNotificationDidEndTrackingComponent";
 
 @interface KSOColorPickerView () <UIDragInteractionDelegate, UIDropInteractionDelegate>
 @property (strong,nonatomic) KSOColorPickerSwatchView *swatchView;

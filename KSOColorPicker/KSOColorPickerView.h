@@ -59,6 +59,14 @@ FOUNDATION_EXTERN NSNotificationName const KSOColorPickerViewNotificationDidChan
  Notification that is posted when the KSOColorPickerView mode property changes. The object of the notification is the KSOColorPickerView instance whose mode property changed.
  */
 FOUNDATION_EXTERN NSNotificationName const KSOColorPickerViewNotificationDidChangeMode;
+/**
+ Notification that is posted when the user begins interaction with a component slider. The object of the notification is the KSOColorPickerView instance that began tracking.
+ */
+FOUNDATION_EXTERN NSNotificationName const KSOColorPickerViewNotificationDidBeginTrackingComponent;
+/**
+ Notification that is posted when the user ends interaction with a component slider. The object of the notification is the KSOColorPickerView instance that ended tracking.
+ */
+FOUNDATION_EXTERN NSNotificationName const KSOColorPickerViewNotificationDidEndTrackingComponent;
 
 /**
  KSOColorPickerView manages a number of subviews to facilitate picking colors by the user. It (optionally) displays the possible modes top aligned if the userCanSelectMode property is YES, followed by a swatch view that displays the selected color, and finally by a number of UISlider controls that allow the user to select the necessary color components.

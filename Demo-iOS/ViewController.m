@@ -58,6 +58,40 @@
         
         [self.navigationController pushViewController:viewController animated:YES];
     }]];
+    
+    self.colorPickerButton.titleForColorBlock = ^NSString * _Nullable(__kindof KSOColorPickerButton * _Nonnull colorPickerButton, UIColor * _Nullable color) {
+        if (color == nil) {
+            return @"None";
+        }
+        else {
+            switch (colorPickerButton.colorPickerView.mode) {
+                case KSOColorPickerViewModeW:
+                case KSOColorPickerViewModeWA: {
+                    CGFloat white, alpha;
+                    
+                    [color getWhite:&white alpha:&alpha];
+                    
+                    return [NSString stringWithFormat:@"W: %@ A: %@", [colorPickerButton.colorPickerView.RGBNumberFormatter stringFromNumber:@(white)], [colorPickerButton.colorPickerView.percentNumberFormatter stringFromNumber:@(alpha)]];
+                }
+                case KSOColorPickerViewModeRGB:
+                case KSOColorPickerViewModeRGBA: {
+                    CGFloat red, green, blue, alpha;
+                    
+                    [color getRed:&red green:&green blue:&blue alpha:&alpha];
+                    
+                    return [NSString stringWithFormat:@"R: %@ G: %@ B: %@ A: %@", [colorPickerButton.colorPickerView.RGBNumberFormatter stringFromNumber:@(red)], [colorPickerButton.colorPickerView.RGBNumberFormatter stringFromNumber:@(green)], [colorPickerButton.colorPickerView.RGBNumberFormatter stringFromNumber:@(blue)], [colorPickerButton.colorPickerView.percentNumberFormatter stringFromNumber:@(alpha)]];
+                }
+                case KSOColorPickerViewModeHSB:
+                case KSOColorPickerViewModeHSBA: {
+                    CGFloat hue, saturation, brightness, alpha;
+                    
+                    [color getHue:&hue saturation:&saturation brightness:&brightness alpha:&alpha];
+                    
+                    return [NSString stringWithFormat:@"H: %@ S: %@ B: %@ A: %@", [colorPickerButton.colorPickerView.hueNumberFormatter stringFromNumber:@(hue)], [colorPickerButton.colorPickerView.percentNumberFormatter stringFromNumber:@(saturation)], [colorPickerButton.colorPickerView.percentNumberFormatter stringFromNumber:@(brightness)], [colorPickerButton.colorPickerView.percentNumberFormatter stringFromNumber:@(alpha)]];
+                }
+            }
+        }
+    };
 }
 
 - (void)colorPickerViewController:(KSOColorPickerViewController *)viewController didFinishPickingColor:(UIColor *)color {
