@@ -9,7 +9,7 @@
 Pod::Spec.new do |s|
 
   s.name         = "KSOColorPicker"
-  s.version      = "0.2.0"
+  s.version      = "0.3.0"
   s.summary      = "KSOColorPicker is a iOS framework to facilitate picking colors by the user."
   s.description  = <<-DESC
   KSOColorPicker is a iOS framework to facilitate picking colors by the user. It supports WA, RGB, and HSBA modes. It supports drag and drop on all compatible iOS devices.
@@ -34,6 +34,7 @@ Pod::Spec.new do |s|
 
   s.frameworks = "Foundation", "UIKit"
 
+  s.dependency "KSOFontAwesomeExtensions"
   s.dependency "Ditko"
   s.dependency "Stanley"
 end
